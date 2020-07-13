@@ -1,5 +1,7 @@
 # Counting
 
+## Asymptotics
+
 ### Approximating a summation
 
 It is not always possible to find a closed-form expression for a sum. For example, no closed form is known for 
@@ -110,7 +112,7 @@ $$
 
 $\theta$ is an equivalance realtion
 
-### Common Mistakes
+### Common Mistakes With Asymptotics
 
 > ". = O(.)" defines a relation
 
