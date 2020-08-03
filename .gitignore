@@ -1,5 +1,6 @@
 # vscode 
 .vscode
 
-#images 
-img
+# .log and .aux files for latex
+*.aux
+*.log
