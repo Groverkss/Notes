@@ -4,3 +4,4 @@
 # .log and .aux files for latex
 *.aux
 *.log
+*.toc
