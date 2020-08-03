@@ -1,0 +1,16 @@
+\documentclass{article}
+
+% Adding pictures/figures in LaTeX
+
+\usepackage{graphicx} % For \includegraphics
+
+\begin{document}
+\begin{figure}
+   \includegraphics[width=\linewidth]{boat.jpeg}
+   \caption{A boat.}
+   \label{fig:boat1} % Invisible, but useful for refering to this pic later
+\end{figure}
+
+Figure \ref{fig:boat1} shows a boat. % Refering the pic using the label
+
+\end{document}

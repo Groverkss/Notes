@@ -1,0 +1,56 @@
+\documentclass{article}
+
+% Using math equation in latex
+
+\usepackage{amsmath}
+
+\begin{document}
+The formula $f(x) = x^2$ is an example.
+
+% You cannot type more than 1 equation in equation environment
+
+% Using equation*
+\begin{equation*}
+    1 + 2 = 3
+\end{equation*}
+
+\begin{equation*}
+    1 = 3 - 2
+\end{equation*}
+
+% You can type more than 1 equation in align mode. The * is to disable
+% numbering for each equation
+
+% Using align*
+\begin{align*}
+    1 + 2 &= 3\\ % \\ seperats equations by a newline
+    1 &= 3 - 2   % Equations are aligned according to &=
+\end{align*}
+
+% Usage of amsmath
+\begin{align*}
+    f(x) &= x^2\\
+    g(x) &= \frac{1}{x}\\
+    F(x) &= \int^a_b \frac{1}{3}x^3\\
+    G(x) &= \frac{1}{\sqrt{x}}\\
+\end{align*}
+
+% Matrix in display math mode
+$$
+\begin{pmatrix}
+    0 & 1\\
+    1 & 0
+\end{pmatrix}
+$$
+
+% Matrix in inline math mode
+This is a matrix $
+\begin{pmatrix}
+    0 & 1\\
+    1 & 0
+\end{pmatrix}
+$ in inline math mode.
+
+Putting non-scaling brackets $\rightarrow (\frac{1}{\sqrt{x}})$ vs
+putting scaling brackets $\rightarrow \left(\frac{1}{\sqrt{x}}\right)$.
+\end{document}
