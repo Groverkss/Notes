@@ -3,10 +3,17 @@
 % Creating a table of contents in a latex file structured using sections.
 % Always compile the file twice to get the refrenced things works.
 
+% Different depths that can be set
+% \setcounter{tocdepth}{1} % Show sections
+\setcounter{tocdepth}{2} % + subsections
+% \setcounter{tocdepth}{3} % + subsubsections
+% \setcounter{tocdepth}{4} % + paragraphs
+% \setcounter{tocdepth}{5} % + subparagraphs
+
 \begin{document}
 
 \pagenumbering{gobble}
-\tableofcontents
+\tableofcontents % Adds a TOC based on sections, paragraphs
 \newpage
 \pagenumbering{arabic}
 
@@ -17,5 +24,25 @@ Dummy text
 \subsection{Subsection}
 
 Dummy text
+
+\section{Section 2}
+
+Alapan is a smart person
+
+\subsection{Alapan wow}
+
+Zeeshan speaks obvious things
+
+\subsubsection{Zeeshan}
+
+Hi shreyas
+
+\paragraph{Proof that idk}
+
+Dummy Dummy text
+
+\subparagraph{Dummier text}
+
+Dummy Dummy Dumm tex
 
 \end{document}

@@ -55,4 +55,56 @@ $\neg(x \lor y) = \neg(x) \land \neg(y)$\\
 
 \subsection{Boolean Functions Synthesis}
 
-Given a Truth Table, how do we construct a boolean function for it?
+Given a Truth Table, how do we construct a boolean function for it?\\
+
+Lets take an example, 
+
+\begin{table}[h!]
+    \begin{center} 
+        \caption{Truth Table for a Boolean Function}
+        \label{tab:example1}
+        \begin{tabular}{l|l|l|l}
+            $x$ & $y$ & $z$ & $f$\\
+            \hline
+            0 & 0 & 0 & 0\\
+            0 & 0 & 1 & 1\\
+            0 & 1 & 0 & 0\\
+            0 & 1 & 1 & 0\\
+            1 & 0 & 0 & 0\\
+            1 & 0 & 1 & 0\\
+            1 & 1 & 0 & 1\\
+            1 & 1 & 1 & 0\\
+        \end{tabular}
+    \end{center}
+\end{table}
+
+This table can be represented by taking OR of the "true"" statements. 
+We can represent the "true" statements by a boolean expression.
+For example, $x = 0, y = 0, z = 1, f = 1$ can be represented by
+$\neg x \land \neg y \land z$. This expression is only true when
+$x = 0, y = 0, z = 1$ and false on all other cases. So, we can
+represent every boolean function by AND of such terms.\\
+
+The truth table \ref{tab:example1} can be represented by the expression:
+
+$$
+(\neg x \land \neg y \land z) \lor (x \land y \land \neg z)
+$$
+
+But what is the minimum size expression we can build from a truth
+table? This is a NP-Complete problem and cannot be solved in
+polynomial time if $P \neq NP$.\\
+
+\subsection{Why NAND?}
+We can represent every boolean expression only using NAND. This
+can be trivially proved.
+
+\section{Gate Logic}
+
+A technique for implementing Boolean functions using logic gates.\\
+
+Logic Gates:
+\begin{enumerate}
+    \item Elementary (Nand, And, Or, Not)
+    \item Composite (Mux, Adder)
+\end{enumerate}

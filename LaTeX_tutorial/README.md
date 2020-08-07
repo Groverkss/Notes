@@ -6,3 +6,7 @@ Table of Contents:
 4. Using Math equations in LaTeX
 5. Adding pictures/figures
 6. Adding a table of contents
+7. Bibliography in LaTeX with Bibtex/Biblatex
+   (Seemed useless for now, skipped)
+8. LaTeX Footnotes
+9. LaTeX Table
