@@ -8,3 +8,6 @@ Notes made while studying [6.042J](https://ocw.mit.edu/courses/electrical-engine
 
 ### LaTeX tutorial
 Notes made while learning using LaTeX from [here](https://www.latex-tutorial.com/tutorials/table-of-contents/) 
+
+### NandToTetris
+Building a modern computer from scratch(NAND Gates) [course page](https://www.nand2tetris.org/)
