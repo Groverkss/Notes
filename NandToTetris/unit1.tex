@@ -108,3 +108,69 @@ Logic Gates:
     \item Elementary (Nand, And, Or, Not)
     \item Composite (Mux, Adder)
 \end{enumerate}
+
+\subsection{Elementary logic gates: Nand}
+
+Gate Diagram: 
+
+\begin{figure}[h!]
+    \begin{center}
+        \begin{circuitikz}
+            \draw (0, 0) node[nand port] (mynand) {}
+            (mynand.in 1) node[anchor=east] {a}
+            (mynand.in 2) node[anchor=east] {b}
+            (mynand.out) node[anchor=west] {out};
+        \end{circuitikz}
+        \caption{A Nand Gate}
+    \end{center}
+\end{figure}
+
+Function Specification:
+
+if (a == 1 and b == 1):
+then out=0 else out=1
+
+\newpage
+
+\subsection{Elementary logic Gates: And, Or, Not}
+
+\begin{figure}[h!]
+    \begin{center}
+        \begin{circuitikz}
+            \draw (0, 0) node[and port] {};
+        \end{circuitikz}
+        \caption{A And Gate}
+    \end{center}
+\end{figure}
+
+\begin{figure}[h!]
+    \begin{center}
+        \begin{circuitikz}
+            \draw (0, 0) node[or port] {};
+        \end{circuitikz}
+        \caption{A Or Gate}
+    \end{center}
+\end{figure}
+
+\begin{figure}[h!]
+    \begin{center}
+        \begin{circuitikz}
+            \draw (0, 0) node[not port] {};
+        \end{circuitikz}
+        \caption{A Not Gate}
+    \end{center}
+\end{figure}
+
+\subsection{Composite Gates}
+
+A 3-Input And Gate is an example of a composite gate.
+It can be build using two 2-Input And Gates.\\
+
+Functional Specification:
+
+if (a==1 and b==1 and c==1):
+then out=1 else out=0
+
+\section{Hardware Description Language}
+
+

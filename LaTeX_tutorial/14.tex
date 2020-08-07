@@ -1,0 +1,61 @@
+\documentclass{article}
+
+\usepackage{tikz}
+\usepackage{circuitikz}
+\usetikzlibrary{positioning}
+
+\begin{document}
+
+\begin{figure}[h!]
+    \begin{center}
+        \begin{circuitikz}
+            \draw (0, 0)
+            to[V, v=$U_q$] (0, 2) % The voltage source
+            to[short] (2, 2)
+            to[R=$R_1$] (2, 0) % The resistor
+            to[short] (0, 0);
+        \end{circuitikz}
+        \caption{Circuitikz bois}
+    \end{center}
+\end{figure}
+
+\begin{figure}[h!]
+    \begin{center}
+        \begin{circuitikz}
+            \draw (0, 0)
+            to[V, v=$U_q$] (0, 2) % The voltage source
+            to[short] (2, 2)
+            to[R=$R_1$] (2, 0) % The resistor
+            to[short] (0, 0);
+
+            \draw(2, 2) 
+            to[short] (4, 2)
+            to[L=$L_1$] (4, 0)
+            to[short] (2, 0);
+
+            \draw(4, 2)
+            to[short] (6, 2)
+            to[C=$C_1$] (6, 0)
+            to[short] (4, 0);
+        \end{circuitikz}
+        \caption{Bigger Circuitikz bois}
+    \end{center}
+\end{figure}
+
+\begin{figure}[h!]
+    \begin{center}
+        \begin{circuitikz}
+            \draw 
+            (0, 2) node[and port] (myand) {}
+            (2, 1) node[or port] (myor) {}
+            (myand.in 1) node[anchor=east] {A}
+            (myand.in 2) node[anchor=east] (bnode) {B}
+            (myand.out) -| (myor.in 1)
+            node[below=of bnode] (cnode) {C}
+            (cnode) -| (myor.in 2);
+        \end{circuitikz}
+        \caption{Logic Gates}
+    \end{center}
+\end{figure}
+
+\end{document}

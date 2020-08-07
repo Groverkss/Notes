@@ -12,3 +12,4 @@ Table of Contents:
 9. LaTeX Table
 12. Drawing Graphs with Tikz/Pgf
 13. Highlist source code in LaTeX with the lstlisting package
+14. Circuit diagrams in LaTeX - Using Circuitikz
