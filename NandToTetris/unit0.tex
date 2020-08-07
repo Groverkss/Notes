@@ -1,0 +1,56 @@
+\chapter{Introduction}
+
+\section{The Big Picture}
+
+In Part-1 we will build hardware of the computer. In Part-2 we will complete 
+the picture and build the software heirarchy of the computer.
+
+\subsection{The Road Ahead}
+How do you actually print "Hello World"? Not writing code for it, but how does
+it actually work? Why don't we have to worry about it?
+We only care about "what" is to be done. \\
+
+"How" $\leftarrow$ Implementation \quad
+"What" $\leftarrow$ Abstraction \\
+
+But who will worry about the "how"? Someone has to do it. A nice thing about
+computers is once we have done the "how" we only need to
+worry about the "what". \\
+
+\subsection{Multiple Layers of Abstraction}
+Once we have built the lower level, we dont need to
+worry about it and can abstract it. \\
+
+Every week, we will worry about a single level, take the lower level as given,
+implement the higher level and test that it works. \\\\
+
+By the end of the course, we will have built a complete functioning computer
+and can run anything including games like Tetris.
+
+\subsection{Two Parts}
+\begin{enumerate}
+    \item Part-I : Hardware
+        \begin{enumerate}
+            \item Start with \textit{Nand}
+            \item Create the \textit{HACK} computer
+        \end{enumerate}
+    \item Part-II : Software
+        \begin{enumerate}
+            \item Start with the \textit{HACK} computer
+            \item Create a fill sotware hierarchy that $\dots$
+            \item $\dots$ runs applications like \textit{Tetris}
+        \end{enumerate}
+\end{enumerate}
+
+\subsection{From Nand To Hack}
+
+Nand
+$\xrightarrow{\text{Combinational Logic}}$ Elementary Logic Gates
+$\xrightarrow{\text{Comb. and Seq. Logic}}$ CPU, RAM, chipset
+$\xrightarrow{\text{Digital Design}}$ Computer Architecture
+$\xrightarrow{\text{Assembler}}$ Low Level Code
+
+\subsection{How to build a chip}
+
+We will use build our chip on a hardware simulator. We will do
+this in a HDL (Harware Discription Language).

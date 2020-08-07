@@ -1,0 +1,58 @@
+\chapter{Boolean Functions and Gate Logic}
+
+\section{Boolean Logic}
+
+$x\ AND\ y \rightarrow x \land y$\\
+$x\ OR\ y \rightarrow x \lor y$\\
+$NOT(x) \rightarrow \neg x$\\
+
+\subsection{Boolean Functions}
+
+$f(x, y, z) = (x \land y) \lor (\neg x \land z)$
+
+\begin{table}[h!]
+    \begin{center} 
+        \caption{$f(x, y, z)$}
+        \label{tab:fxyz}
+        \begin{tabular}{l|l|l|l}
+            $x$ & $y$ & $z$ & $f$\\
+            \hline
+            0 & 0 & 0 & 0\\
+            0 & 0 & 1 & 1\\
+            0 & 1 & 0 & 0\\
+            0 & 1 & 1 & 1\\
+            1 & 0 & 0 & 0\\
+            1 & 0 & 1 & 0\\
+            1 & 1 & 0 & 1\\
+            1 & 1 & 1 & 1\\
+        \end{tabular}
+    \end{center}
+\end{table}
+
+Both are identical representations
+
+\subsection{Boolean Identies}
+
+Commutative Laws:\\
+
+$x \land y = y \land x$\\
+$x \lor y = y \lor x$\\
+
+Associative Laws:\\
+
+$x \land (y \land z) = (x \land y) \land z$\\
+$x \lor (y \lor z) = (x \lor y) \lor z$\\
+
+Distributive Laws:\\
+
+$x \land (y \lor z) = (x \land y) \lor (x \land z)$\\
+$x \lor (y \land z) = (x \lor y) \land (x \lor z)$\\
+
+De Morgan Laws:\\
+
+$\neg(x \land y) = \neg(x) \lor \neg(y)$\\
+$\neg(x \lor y) = \neg(x) \land \neg(y)$\\
+
+\subsection{Boolean Functions Synthesis}
+
+Given a Truth Table, how do we construct a boolean function for it?
