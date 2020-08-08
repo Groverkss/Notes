@@ -5,10 +5,26 @@
 \usepackage{tikz}
 \usepackage{circuitikz}
 \usepackage{listings}
+\usepackage{graphicx}
+\usepackage{titling}
 
-\title{Nand To Tetris}
+% set up \maketitle to accept a new item
+\predate{\begin{center}\placetitlepicture\large}
+\postdate{\par\end{center}}
+
+% commands for including the picture
+\newcommand{\titlepicture}[2][]{
+  \renewcommand\placetitlepicture{
+    \includegraphics[#1]{#2}\par\medskip
+  }
+}
+\newcommand{\placetitlepicture}{} % initialization
+
+\title{\huge Nand To Tetris}
 \author{Kunwar Shaanjeet Singh Grover}
 \date{}
+\titlepicture[width=\linewidth]{cover.png}
+
 
 \setcounter{tocdepth}{1}
 
@@ -16,6 +32,7 @@
 
 \pagenumbering{gobble}
 \maketitle
+\newpage
 \pagenumbering{arabic}
 \tableofcontents
 
