@@ -309,3 +309,37 @@ Some syntactic choices of our HDL:
     \item Width of internal pins is deduced automatically
     \item "false" and "true" may be used as buses of any width
 \end{itemize}
+
+\section{More Logic Gates required for project}
+
+\subsection{Multiplexor}
+
+A 2-way multiplexor enables selecting and outputing, one out of 
+two possible inputs.\\
+
+Widely used in:
+\begin{itemize}
+    \item Digital Design
+    \item Communications Networks
+\end{itemize}
+
+\begin{lstlisting}
+    if (sel==0)
+        out=a
+    else
+        out=b
+\end{lstlisting}
+
+Example for an AndMuxOr:
+
+\begin{lstlisting}
+CHIP AndMuxOr {
+    IN a, b, sel;
+    OUT out;
+
+    PARTS:
+    And (a=a, b=b, out=andOut);
+    Or (a=a, b=b, out=orOut);
+    Mux (a=andOut, b=orOut, sel=sel, out=out);
+}
+\end{lstlisting}
