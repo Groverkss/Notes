@@ -1,0 +1,96 @@
+\chapter{Lecture 1}
+
+\section{Course Details}
+
+Textbook: Elmasri\\
+
+Contents of Course:
+\begin{enumerate}
+\item Introduction/Database Concepts
+\item Data Modeling
+\item Relational Model
+\item Normalization
+\item Algebra/Calculas/SQL
+\end{enumerate}
+
+\subsection{Project}
+
+Database Design Project.\\
+
+-- Four phases - Rotation
+-- group of 3 members
+
+1 -- Requirements Analusis
+2 -- Conceptual Design
+3 -- Logical Design 
+4 -- Applications \& SQL
+
+\subsection{Motivation for the course}
+
+\begin{itemize}
+\item As a CS person, you are going to work with data and databases.
+\item Second Largest Software Sales is Database Systems
+Want a job? Do this course
+\item A lot more was said but i wasnt paying attention :( 
+    Overall a useful course.
+\end{itemize}
+
+\section{What are Database Systems?}
+
+Any piece of information that can be captured is data. \\
+
+There is birth of data and rarely a death of data.
+For example, you send a ping to another computer and ask "Are you alive?", the time and message is recorded. The time and message is data. The time is the birth of data.\\
+
+Data $\leftarrow$ Factual (undoubted) information that can be
+recorded and have implicit meaning. \\
+
+A database is a collection of related data. \\
+
+For example, what courses students of a batch are taking.
+This is related data. A database can be formed from this data and
+probably already exists in IIIT database.\\
+
+\subsection{What is a Database?}
+
+A database has the following implicit properties:
+
+\begin{itemize}
+\item A database represents some aspect of the real world. (Universe of Discourse)
+\item A database is a logically coherent (associated, related) collection of data with some inherent meaning.
+\item A database is designed, build, and populated with data for a specific purpose.
+\item It has an intended group of users and some preconceived (already thought of) applications in which these users are interested.
+\end{itemize}
+
+\subsection{Database System}
+A database system (DBMS) is a collection of programs that enables
+users to create and maintain a database.
+
+\begin{itemize}
+\item Defining Databases -- involves specifying the data types,
+    structures, and contraints for the data to be stored in the
+    database.
+\item Constructing Databases -- sotring the data itself (populating)
+    on some storage medium that is controlled by the DBMS.
+\item Manipulating Databases -- quering the database to retrieve specific data, updating the databases to reflect changes to mini-world.
+\end{itemize}
+
+\subsubsection{Simplified Database System}
+
+(Figure)
+
+\subsection{Example of a Database}
+
+Consider a part of a University environment\\
+
+We need data about:
+    STUDENTSs\\
+    COURSEs\\
+    SECTIONs (of COURSEs)\\
+    (academic) DEPARTMENTs\\
+    INSTRUCTORSs\\
+
+The above data is related as follows:
+    SECTIONs are of specific COURSEs\\
+    STUDENTs take SECTIONs\\
+    COURSEs have prequistic COURSEs\\
