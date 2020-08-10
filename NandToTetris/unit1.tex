@@ -2,57 +2,6 @@
 
 \section{Boolean Logic}
 
-$x\ AND\ y \rightarrow x \land y$\\
-$x\ OR\ y \rightarrow x \lor y$\\
-$NOT(x) \rightarrow \neg x$\\
-
-\subsection{Boolean Functions}
-
-$f(x, y, z) = (x \land y) \lor (\neg x \land z)$
-
-\begin{table}[h!]
-    \begin{center} 
-        \caption{$f(x, y, z)$}
-        \label{tab:fxyz}
-        \begin{tabular}{l|l|l|l}
-            $x$ & $y$ & $z$ & $f$\\
-            \hline
-            0 & 0 & 0 & 0\\
-            0 & 0 & 1 & 1\\
-            0 & 1 & 0 & 0\\
-            0 & 1 & 1 & 1\\
-            1 & 0 & 0 & 0\\
-            1 & 0 & 1 & 0\\
-            1 & 1 & 0 & 1\\
-            1 & 1 & 1 & 1\\
-        \end{tabular}
-    \end{center}
-\end{table}
-
-Both are identical representations
-
-\subsection{Boolean Identies}
-
-Commutative Laws:\\
-
-$x \land y = y \land x$\\
-$x \lor y = y \lor x$\\
-
-Associative Laws:\\
-
-$x \land (y \land z) = (x \land y) \land z$\\
-$x \lor (y \lor z) = (x \lor y) \lor z$\\
-
-Distributive Laws:\\
-
-$x \land (y \lor z) = (x \land y) \lor (x \land z)$\\
-$x \lor (y \land z) = (x \lor y) \land (x \lor z)$\\
-
-De Morgan Laws:\\
-
-$\neg(x \land y) = \neg(x) \lor \neg(y)$\\
-$\neg(x \lor y) = \neg(x) \land \neg(y)$\\
-
 \subsection{Boolean Functions Synthesis}
 
 Given a Truth Table, how do we construct a boolean function for it?\\
@@ -109,68 +58,6 @@ Logic Gates:
     \item Composite (Mux, Adder)
 \end{enumerate}
 
-\subsection{Elementary logic gates: Nand}
-
-Gate Diagram: 
-
-\begin{figure}[h!]
-    \begin{center}
-        \begin{circuitikz}
-            \draw (0, 0) node[nand port] (mynand) {}
-            (mynand.in 1) node[anchor=east] {a}
-            (mynand.in 2) node[anchor=east] {b}
-            (mynand.out) node[anchor=west] {out};
-        \end{circuitikz}
-        \caption{A Nand Gate}
-    \end{center}
-\end{figure}
-
-Function Specification:
-
-if (a == 1 and b == 1):
-then out=0 else out=1
-
-\newpage
-
-\subsection{Elementary logic Gates: And, Or, Not}
-
-\begin{figure}[h!]
-    \begin{center}
-        \begin{circuitikz}
-            \draw (0, 0) node[and port] {};
-        \end{circuitikz}
-        \caption{A And Gate}
-    \end{center}
-\end{figure}
-
-\begin{figure}[h!]
-    \begin{center}
-        \begin{circuitikz}
-            \draw (0, 0) node[or port] {};
-        \end{circuitikz}
-        \caption{A Or Gate}
-    \end{center}
-\end{figure}
-
-\begin{figure}[h!]
-    \begin{center}
-        \begin{circuitikz}
-            \draw (0, 0) node[not port] {};
-        \end{circuitikz}
-        \caption{A Not Gate}
-    \end{center}
-\end{figure}
-
-\subsection{Composite Gates}
-
-A 3-Input And Gate is an example of a composite gate.
-It can be build using two 2-Input And Gates.\\
-
-Functional Specification:
-
-if (a==1 and b==1 and c==1):
-then out=1 else out=0
-
 \section{Hardware Description Language}
 
 Here is a possible implementation of a XOR gate in HDL.
@@ -216,7 +103,7 @@ Common HDLs:
     \item Many more HDLs
 \end{itemize}
 
-Out HDL:
+Our HDL:
 
 \begin{itemize}
     \item Similar in spirit to other HDLs
@@ -252,44 +139,6 @@ CHIP Add3Way16 {
 }
 \end{lstlisting}
 
-Another example:
-
-\begin{lstlisting}
-/*
-*  ANDs together all 4 bits of the input
-*/
-
-CHIP And4Way {
-    IN a[4];
-    OUT out;
-
-    PARTS:
-    AND(a=a[0], b=a[1], out=t01)
-    AND(a=t01, b=a[2], out=t012);
-    AND(a=t012, b=a[3], out=out);
-}
-\end{lstlisting}
-
-An example with output as a bus:
-
-\begin{lstlisting}
-/*
-* Computes a bit-wise and of its two 4-bit
-* input buses
-*/
-
-CHIP And4 {
-    IN a[4], b[4];
-    OUT out[4];
-
-    PARTS:
-    AND(a=a[0], b=b[0], out=out[0]);
-    AND(a=a[1], b=b[1], out=out[1]);
-    AND(a=a[2], b=b[2], out=out[2]);
-    AND(a=a[3], b=b[3], out=out[3]);
-}
-\end{lstlisting}
-
 \subsection{Sub-buses}
 
 Buses can be composed from (and broken into) sub-buses:
@@ -309,51 +158,6 @@ Some syntactic choices of our HDL:
     \item Width of internal pins is deduced automatically
     \item "false" and "true" may be used as buses of any width
 \end{itemize}
-
-\section{More Logic Gates required for project}
-
-\subsection{Multiplexor}
-
-A 2-way multiplexor enables selecting and outputing, one out of 
-two possible inputs.\\
-
-Widely used in:
-\begin{itemize}
-    \item Digital Design
-    \item Communications Networks
-\end{itemize}
-
-\begin{lstlisting}
-    if (sel==0)
-        out=a
-    else
-        out=b
-\end{lstlisting}
-
-Example for an AndMuxOr:
-
-\begin{lstlisting}
-CHIP AndMuxOr {
-    IN a, b, sel;
-    OUT out;
-
-    PARTS:
-    And (a=a, b=b, out=andOut);
-    Or (a=a, b=b, out=orOut);
-    Mux (a=andOut, b=orOut, sel=sel, out=out);
-}
-\end{lstlisting}
-
-\subsection{Demultiplexor}
-
-\begin{lstlisting}
-    if (sel==0)
-        {a, b}={in, 0}
-    else
-        {a, b}={0, in}
-\end{lstlisting}
-
-Acts like "inverse" of a multiplexor
 
 \section{Prespectives}
 

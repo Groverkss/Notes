@@ -1,0 +1,23 @@
+\chapter{Boolean Arithematic and The ALU}
+
+\section{ALU: Arithemetic Logic Unit}
+
+The ALU computes a function of the two inputs, and outputs the
+result.\\
+
+Which operations should the ALU perform? This is a hardware/software
+tradeoff.
+
+\section{Prespectives}
+
+Our ALU is extremly simplified with respect to the industrial
+level ALUs. This is because the course emphasises simplicity.\\
+
+Operations like multiplications, division will be left to the
+software part of course. The tradeoff is that it will be slower
+but more cost effective.\\
+
+The 16-bit adder we make is actually not that efficent, because we
+add the first bits, then compute the carry and then go to the next.
+This takes a lot of time. A more efficent way is to create lookup
+table and use it to computer carries faster: \href{https://en.wikipedia.org/wiki/Carry-lookahead_adder}{Carry Lookahead Adders} 

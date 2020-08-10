@@ -1,2 +1,2 @@
 #!/bin/bash
-ls | grep -E '.aux|.log|.toc' | xargs rm -f
+ls | grep -E '.aux|.log|.toc|.out' | xargs rm -f
