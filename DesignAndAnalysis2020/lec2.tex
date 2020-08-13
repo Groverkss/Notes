@@ -1,0 +1,114 @@
+\chapter{Computatin}
+
+\subsection{Problems as membership queries in Languages}
+
+\textbf{Decision Problems:} A problem that takes an input and gives
+exactly one bit of output, where $1 \rightarrow$ true and 
+$0 \rightarrow$ false.\\
+
+We are not losing much in generality as we can split a problem which
+is not a decision problem into a number of decision problems. For
+example a problem having an output of 2bits can be split into
+2 problems in which we get the first bit and second bit via two
+different decision problems.\\
+
+Each decision problem is characterized by a subset of set of
+of all possible inputs (that is, subset of, say, ${\{0, 1\}}^{*}$)\\
+
+\begin{center}
+    Or \textbf{LANUAGES}
+\end{center}
+
+\begin{lstlisting}
+    INPUT: String x;
+    OUTPUT: YES if x in language L, else NO
+\end{lstlisting}
+
+Example 1: Primality Testing\\
+PRIMES = {n | n is prime}\\
+
+Example 2: Graph Connectivity\\
+GC = {Graph G | G is connected}\\
+
+Example 3: Boolean Satisfiability\\
+SAT = {CNF Boolean Satisfiability f | f is not a fallacy; i.e f 
+is satisfiable}\\
+
+A computational problem is a membership query in a language.
+
+\section{Countability and Computability}
+
+\subsection{Countable Sets}
+
+An infinite set is countable if there is a bijection $f: \N
+\rightarrow S$. 
+
+\begin{theorem}
+    The set of finite length bit string ${\{0, 1\}}^{*}$
+    is countable
+\end{theorem}
+
+\textbf{Proof:} Intutively we can strike up the 1-1 correspondence
+$f: \N \rightarrow {\{0, 1\}}^{*}$ by listing the strings in
+short-lex order.
+
+HW: Prove that $f$ is 1-to-1 and onto.
+
+\begin{theorem}
+    The power set of bit strings $P({\{0, 1\}}^{*})$ is uncountable.
+\end{theorem}
+
+\textbf{Proof:} Any subset $T$ in $P$ can be viewed as a function
+$f: {\{0, 1\}}^{*} \rightarrow \{0, 1\}$. this is done by making 
+the function take value 1 for elements in the set, and the value 0
+for elements not in the set.\\
+
+(Insert fig1)\\
+
+Suppose that $P$ were countable.
+Thus it would be possible to find a bijection from $\N$ to $P$.\\
+
+Hence, we can list all binary languages as a sequence:\\
+
+$$
+L_1, L_2, L_3, L_4, \dots
+$$
+
+supposedly containing all languages.\\
+
+(Insert fig2)\\
+
+\textbf{Cantor's Diabolical Diagnol Argument:} Take a language $L'$
+such that $L_j$ is opposite of $j^{th}$ element of $L_j$.
+
+Cantor's diabolical diagonalization arguement shows that we can 
+produce a language $L'$ which is not in $P$. Therefore, our
+assumption that $P$ was countable is false, and thus, $P$ is uncountable.
+
+\qed
+
+\subsection{Connection to Computing}
+
+We show that there are many more computational problems than
+computer program.
+
+\begin{claim}
+    \label{program_countable}
+    Set of all programs is countable.
+\end{claim}
+
+\textbf{Proof:} Every computer program can be encoded in binary
+by some string. Consequently the cardinality of the set of programs
+is no greater than that of ${\{0, 1\}}^{*}$, which is countable.
+
+\begin{claim}
+    \label{problem_uncountable}
+    Set of all problems is uncountable.
+\end{claim}
+
+\textbf{Proof:} Every problem can be seen as a membership query in
+a language. Thus, the set of all problems is of the same cardinality
+as $P{\{0, 1\}}^{*}$, which is uncountable.\\
+
+From \ref{program_countable} and \label{problem_uncountable}, 
+the set of problem is much bigger than the set of programs.

@@ -7,13 +7,28 @@
 \usepackage{listings}
 \usepackage{graphicx}
 \usepackage{titling}
+\usepackage{amsthm}
+
+% Theorem macros
+\newtheorem{theorem}{Theorem}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem*{observation}{Observation}
+\newtheorem*{example}{Example}
+\newtheorem*{remark}{Remark}
+
+\newcommand{\R}{\ensuremath{\mathbb{R}}}
+\newcommand{\N}{\ensuremath{\mathbb{N}}}
 
 \title{\huge Design And Analysis Of Algorithms}
 \author{Kunwar Shaanjeet Singh Grover}
 \date{}
 
 
-\setcounter{tocdepth}{1}
+\setcounter{tocdepth}{2}
 
 \begin{document}
 
@@ -24,5 +39,6 @@
 \tableofcontents
 
 \include{lec1}
+\include{lec2}
 
 \end{document}
