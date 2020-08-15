@@ -84,9 +84,7 @@ and abided by them while working on this problem set:}
 
 \textbf{Your name:} Kunwar Shaanjeet Singh Grover, Email: kunwar.shaanjeet@students.iiit.ac.in
 
-\textbf{Collaborators:} (List here names of anyone you discussed
-problems or ideas for solutions with)
-
+\textbf{Collaborators:} Zeeshan Ahmed, Alapan Chaudhuri
 
 \newpage
 
@@ -259,8 +257,11 @@ function from $T$ to $S$.
 to one function from \(S\) to \(T\).
 
 \textbf{Solution 4.3:}
-
-
+\begin{align*}
+    |S| &= 2^{n^{3}} = 2^{10^{6}}\\
+    |T| &= 2^{2^{100}}\\
+    |S| &\le |T|
+\end{align*}
 
 \begin{lemma}
     \label{th2}
@@ -282,6 +283,9 @@ such that it is one-to-one.
 
 \qed
 
+Since $|S| \le |T|$, using Lemma \ref{th2}, there exists a one-to-one function
+from $S$ to $T$.
+
 \textbf{Question 5.1 (5 points):} Prove that for every finite sets
 \(A,B,C\), \(|A \cup B \cup C| \leq |A|+|B|+|C|\).
 
@@ -289,13 +293,13 @@ such that it is one-to-one.
 To prove this inequality, we use Inclusion/Exclusion Principle
 
 $$
-    |A \cup B| \le |A| + |B|\\
+|A \cup B| \le |A| + |B|\\
 $$
 
 Using the the fact that $|(A \cup B) \cap C| \ge 0$,
 
 $$
-    |A \cup B| - |(A \cup B) \cap C| \le |A \cup B|
+|A \cup B| - |(A \cup B) \cap C| \le |A \cup B|
 $$
 
 Using the above two inequalties,
@@ -453,7 +457,7 @@ $f = O(g):$
 
 \begin{align*}
     \frac{f(n)}{g(n)} &= \frac{n(\log{n})^{3}}{n^{2}}\\
-                      &= \frac{(\log{n})^{2}}{n}\\
+    &= \frac{(\log{n})^{2}}{n}\\
     \limsup_{n \rightarrow \infty} \frac{f(n)}{g(n)} &=
     \limsup_{n \rightarrow \infty} \frac{(\log{n})^{2}}{n}\\
     &= 0\\

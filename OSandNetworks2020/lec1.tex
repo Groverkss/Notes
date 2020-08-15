@@ -1,152 +1,188 @@
-\chapter{Lecture 1}
+\chapter{Virtualisation}
 
-\section{Outline}
+\subsection{Introduction}
 
-\begin{itemize}
-    \item What is an Operating System
-    \item Course topics and grading
-    \item History, development and concepts of Oss
-    \item Different kinds of Computer Systems
-    \item Concept of virtual computer
-\end{itemize}
+(one) Physical thing $\rightarrow$ Many Virtual thing\\
 
-\section{What is a system?}
-
-A system is an inter-related set of components with an identifiable
-boundary working together for some purpose.\\
-
-System can be natural or fabricated:
-\begin{itemize}
-    \item Natural systems: human body or solar system
-    \item Fabricated systems: cycle, bus, etc.
-\end{itemize}
-
-\subsection{Characteristics of a system}
+We are going to talk about virtualising:
 
 \begin{itemize}
-    \item Components:
-        \begin{itemize}
-            \item A system is made up of components
-            \item A compenent is either an irreducible part or aggregation of
-                parts that make-up a system. A component is also called a
-                sub-system.
-        \end{itemize}
-
-    \item Interrelated:
-        \begin{itemize}
-            \item The components of interrelated
-            \item Dependence of one subsystem on one or more subsystems.
-        \end{itemize}
-
-    \item Boundary:
-        \begin{itemize}
-            \item A system has a boundary, within which all of its components
-                are contained and which establishes the lmits of a separating
-                the system from other systems.
-        \end{itemize}
-
-    \item Purpose:
-        \begin{itemize}
-            \item The overall goal of a function of a system.
-            \item The system's reason for existing.
-            \item If you want to design any system, first you need a purpose.
-        \end{itemize}
-
-    \item Environment:
-        \begin{itemize}
-            \item Everythin external to the system that interacts with the 
-                system.
-        \end{itemize}
-
-    \item Interface:
-        \begin{itemize}
-            \item Point of contact where a system meets its environment
-                ot subsystems meet each other.
-        \end{itemize}
-
-    \item Constraint:
-        \begin{itemize}
-            \item A limit what a system can accomplish:
-                Capacity, speed or capabilities.
-        \end{itemize}
-
-    \item Input: 
-        \begin{itemize}
-            \item Whatever a system takes from its environment in order
-                to fulfull its purpose.
-        \end{itemize}
-
-    \item Output:
-        \begin{itemize}
-            \item Whatever a system returns to the envrionment.
-        \end{itemize}
+    \item CPU
+    \item Memory
 \end{itemize}
 
-\section{Important System Concepts}
+Virtualisation is an \textbf{Illusion}. It makes a running program
+think that it has its own CPU and its own private memory.\\
 
-\subsection{Decomposition}
+Key aspects of Virtualisation:
 
 \begin{itemize}
-    \item It deals with being able to break down a system into
-        its components.
-    \item Decomposition results in smaller and less complex pieces
-        which are easier to conqour.
-    \item Decomposing a system allows to focus on a particular 
-        part of system.
+    \item Efficient: No point in making something if it performs
+        worse than the trivial solution
+    \item Secure: We might want to restrict the program to read
+        only its data, and not some other program's data.
 \end{itemize}
 
-\subsection{Modulariy}
+\section{CPU Virtualization}
+
+one (or a few) CPUs $\rightarrow$ Many virtual CPUs\\
+
+The way we are going to do is \textbf{time sharing}. We give each
+program a little bit of time to use the cpu. We give A some time, 
+the B some time, then C some time and then back to A. This is also
+called multi-programming.\\
+
+Abstraction: Process (running program)\\
+
+Components of a process:
+
+\begin{figure}[h!]
+    \begin{center}
+        \includegraphics[width=8cm]{img/process.png}
+        \caption{A process}
+    \end{center}
+\end{figure}
+
+At the low-level there are \textbf{Mechanisms}:
+How things work. You are
+going to need some mechanisms to switch to other programs. You
+also need some \textbf{Policies}:
+High-level decisions which are built
+on top of mechanisms.\\
+
+Core mechanism behind all the cpu and memory virtualisation is
+\textbf{Limited Direct Execution}.\\
+
+The \textit{Direct Execution} part
+directly pretains to efficency.\\
+
+The \textit{Limited} part pretains to Security. The program
+shouldn't have access to everything on the system.\\
+
+\subsection{Direct Execution}
+
+We havent defined what an OS is yet. Lets just say for now OS:
+first program to run. We want to run a program "A".
+
+\newpage
+
+\begin{figure}[h!]
+    \begin{center}
+        \includegraphics[width=8cm]{img/runprogram.png}
+        \caption{Running a program}
+    \end{center}
+\end{figure}
+
+Timeline: OS $\rightarrow$ A $\rightarrow \dots$\\
+
+\textbf{Problems:}
+\begin{itemize}
+    \item What if "A" (user process) wants to do something
+        \textit{restricted}?
+    \item What if OS wants to stop "A", run "B"?
+        (How does the OS regain control?)
+    \item What if "A" does something that is slow? (Disk I/O)
+\end{itemize}
+
+\subsubsection{Problem 1: Restricted operation
+(in a controlled way)}
+
+Mode: per CPU bit.
 
 \begin{itemize}
-    \item Dividing a system into chunks or modules of uniform size.
-    \item Can edit, replace or add another module without
-        effecting the rest of the system.
-    \item Helps in reducing dependencies between systems.
+    \item OS: "kernal mode"\\
+        This mode can do \textbf{anything}
+    \item User program: "user mode"\\
+        Can only do a limited number of things
 \end{itemize}
 
-\subsection{Conesion}
+Its a little bit stored on each (virtual) cpu.\\
+
+How to get into one of these modes? How to transition?\\
+
+@boottime: boot in kernal mode. The OS is the first program runs.
+We are going to have trust on this program.\\
+
+Want to run a user program: Special instruction that both:
+
+\begin{enumerate}
+    \item Transition into user mode
+    \item Jumps in user program
+\end{enumerate}
+
+User program: Wants to do something restricted (example: disk I/O)
+
+\begin{enumerate}
+    \item Jump into kernal mode
+    \item Jumps into kernal\\
+        If you could jump into the kernal just like this then
+        you could do anything you want. This can be a security
+        issue. We want to be able to switch to kernal mode from 
+        user mode but we dont want to allow to jump to any
+        address in the kernal. We want to make this a restricted
+        jump.
+\end{enumerate}
+
+Two instructions:
 
 \begin{itemize}
-    \item TODO 
+    \item Trap\\
+        Jump into the kernal (but @ restricted location) and then
+        elevate "privilege" (use $\rightarrow$ kernal) also save
+        enough register state so that we can return properly.
+    \item Return from Trap
 \end{itemize}
 
-\section{What is an operating system?}
+Timeline:\\
 
-Operating system is a subsystem of a tool which faciliates the
-operation of the tool.\\
+\begin{center}
+    A $\xrightarrow{\text{trap}}$ OS $\rightarrow$ does some stuff
+    $\xrightarrow{\text{return from trap}} \dots$ 
+\end{center}
 
-For a user, the operating system abstracts the machine part
-in terms of simple services by hiding the details of the machine.
-The OS can provide services to users or other subsystems.
+These traps are called \textbf{System Calls}\\
 
-\section{What is a computer operating system?}
+@boottime: OS starts up in kernal mode. It tells the hardware where
+to jump to when somebody issues a kind of trap. For example, oh this
+is trap number 80. When the OS sees this trap number, it has already
+declared what trap number 80 is and jumps to what piece of code to
+run.\\
 
-A computer is also a tool that contains a machine part and an
-operating part. For a computer, the operating system abstracts
-the underlying hardware in terms of simple services by hiding
-the details of the hardware.\\
+Setup all these \textit{trap handlers}
+issuing special instruction to tell hardware where trap handler
+are in OS memory. Now, if someone issues a trap number, the OS
+knows where to jump to, to execute the program.\\
 
-For the rest of the course, operating system refers to computer
-operating system.\\
+We need to save/restore "state" (register) of process:\\
 
-The operating system sits on top of the hardware interacts with
-the system and application programs. You cannot interact with
-the hardware directly. You have to interact with the OS to interact
-with the hardware.\\
+\begin{figure}[h!]
+    \begin{center}
+        \includegraphics[width=5cm]{img/systemcall.png}
+        \caption{A system call}
+    \end{center}
+\end{figure}
 
-\paragraph{Book Defination}
-A program that acts as an intermediary between a user of a 
-computer and the computer hardware.
+For you what it looks like when you call a trapis,
+your execution was halted in mid
+and something happened and you go to the instruction after the
+trap.\\
 
-\paragraph{Operating system goals}
-Make the computer system convenient to use, Use the hardware in
-an efficent way.
+\subsubsection{Problem 2: How to stop A,run B?}
 
-\section{OS Definitions}
+OS was running $\rightarrow$ A $\rightarrow$ while(1);
+$\rightarrow \dots$\\
 
-\begin{itemize}
-    \item Resource Allocator: Manages and allocates resources.
-    \item Control Program: Controls the execution of user programs
-        and operations of I/O devices.
-    \item Kernal: The one program running all the time.
-\end{itemize}
+cooperative approach: hope that A doesnt do bad stuff\\
+
+non-cooperative (preemptive) approach: based on h/w support. H/w
+support in this case is \textbf{timer interrupt}.\\
+
+@boot: OS $\rightarrow$ kernal mode, installs trap handlers, starts
+interrupt timer.
+
+\begin{figure}[h!]
+    \begin{center}
+        \includegraphics[width=5cm]{img/interupttimer.png}
+        \caption{Interupt Timer}
+    \end{center}
+\end{figure}
