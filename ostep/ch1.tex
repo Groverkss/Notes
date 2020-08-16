@@ -1,0 +1,39 @@
+\chapter{Introduction}
+
+\section{Virtualisation}
+
+The OS takes a \textbf{physical} resources (such as the processor
+, or memory, or a disk) and transforms it into a more general,
+powerful, and easy-to-use \textbf{virtual} for of itself. Thus,
+we sometimes refer to the operating system as a \textbf{virtual
+machine}. This general technique of transforming is called
+\textbf{virtualisation}.
+
+\subsection{CPU Virtualisation}
+
+Turning a single CPU into a seemingly infinite number of CPUs and
+thus allowing many programs to seemingly run at once is what
+we call \textbf{virtualizing the CPU}.\\
+
+\subsection{Memory Virtualisation}
+
+Each process accesses its own \textbf{virtual address spaces}, which
+the OS somehow maps onto the physical memory of the machine. Exactly
+how this is accomplished is what we study.
+
+\section{Concurrency}
+
+\textbf{Concurrency} is a conceptual term to refer to a host of 
+problems that arise, and must bf addressed when working on
+many things at once (i.e. concurrently) in the same program.
+
+\section{Presistence}
+
+The software in the operating system that usually manages the disk
+is called the \textbf{file system}; it is this
+responsible for storing any
+files the user creates in a reliable and efficient manner on the 
+disks of the system. The file system is the part of OS in charge
+of managin persisten data. What techniques are needed to do so? 
+What mechanisms and policies are required to do so with a high
+probability?

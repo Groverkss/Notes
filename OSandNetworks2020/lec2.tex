@@ -1,0 +1,72 @@
+\subsubsection{Background: CPU}
+
+Lets quickly refresh our background on how the CPU works.\\
+
+(fig)\\
+
+\begin{itemize}
+    \item Fetch (PC)
+    \item Decode: Figure out which instruction it is (inc. PC)
+    \item Execture: (could change PC)
+\end{itemize}
+
+This view is ok for a single program running. But when we have
+multiple programs running, this isnt enough.\\
+
+Lets add more stuff to this:\\
+
+Before execution: Check permission, is this thing OK to execute?\\
+
+If its not ok: Raise an exception $\rightarrow$ OS gets involved 
+(exception handler).\\
+
+New instruction after Execution: \textbf{Process Interrupts}. 
+Between instructions, there are external events outside of the
+program which the system needs to know about. A key has been pressed
+, the mouse has been moved, a timer has gone off, etc. These are
+things outside the program which need to be handeled.\\
+
+In this step we do: Handle any pending interrupts $\rightarrow$ 
+OS gets involved.
+
+privileged mode $\rightarrow$ kernal mode\\
+unprivileged mode $\rightarrow$ user mode\\
+
+@boot: OS $\rightarrow$ install "handlers" (code). (Tell h/w what
+code to run on exception/interrupts/traps) [done by a privileged
+instruction x86: lidt].\\
+
+Another thing OS has to start running a \textbf{timer interrupt}.
+[privileged]\\
+
+Now we are ready to run user programs.\\
+
+Timeline:
+
+(fig2 [timeline])\\
+
+\begin{itemize}
+    \item "A"" wants OS service (system call)
+        Issue special instructions: \textbf{trap} instruction
+        (x86 called "int")
+
+    \item    Trap: User mode $\rightarrow$ kernal mode\\
+        Jump into OS: target is trap handlers
+
+    \item   Save enough register state so as to enable (so as to 
+        enable resume exec. later).
+
+    \item   OS sys call handler runs
+
+    \item  Ret-from-trap
+\end{itemize}
+
+This is so much work. This is why jumping into a system call
+is much more expensive than a function call.
+
+(fig3)
+
+Timer interrupt: Way to regain control of CPU (by OS). \\
+
+OS handler runs. Can swith to a different process if we want to.
+This is called a \textbf{Context switch}
