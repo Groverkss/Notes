@@ -1,1 +1,161 @@
-\chapter{}
+\chapter{Virtualisation}
+
+\section{The Abstraction: The Process}
+
+\textbf{Process:} A running program.\\
+
+\textbf{Crux Of The Problem:} Although there are only a few physical CPUs
+available, how can the OS provide the ullusion of nearly-endless supply of 
+said CPUs?\\
+
+The OS creates this illusion by \textbf{virtualizing} the CPU. By running
+one process, then stopping it and running another, and so forth, the OS can
+promote the illusion that many virtual CPUs exist when in fact there is only
+one physical CPU (or a few). This technique is called \textbf{time-sharing}.\\
+
+To do this, OS requires some low-level machinery and some
+high-level intelligence. The low-level machinery is called \textbf{mechanisms}.
+For example, stopping one program and starting another on a given CPU. On top
+of these mechanisms, there is high-level intelligence call \textbf{policies}.
+Policies are algorithms for making decisions within the OS.\\
+
+Mechanisms: Provides answer to a \textit{how} question.
+
+Policies: Provides answer to a \textit{which} question.\\
+
+\section{Mechanism: Limited Direct Execution}
+
+\textbf{The Crux: How to efficiently virtualize the CPU with control?}
+
+The OS must virtualize the CPU in an efficient manner while retaining control
+over the system. To do so, both hardware and operating-system support will be
+required. The OS will often use a judicious bit of hardware support in order to
+accomplish its work effectively.
+
+\subsection{Basic Technique: Limited Direct Execution}
+
+The \textit{direct execution} part of the idea: just run the program directly
+on the CPU. Thus, when the OS wishes to start a program, it creates a process
+entry for it in a process list, allocates some memory for it, loads the program
+code into memory, locates its entery point (main()), jumps to it, and starts
+running the user's code.\\
+
+This approach gives rise to a few problems:
+
+\begin{itemize}
+    \item How to make sure that the program does not do anything that we dont
+        want it to do while still maintaining efficency?
+    \item How do we stop a process and switch to another process, i.e. how
+        to implement \textbf{time sharing} we require to virtualize the CPU?
+\end{itemize}
+
+\subsubsection{Problem \#1: Restricted Operations}
+
+What if the process wishes to perform some kind of restricted operation, such
+as issuing an I/O request to a disk, or gaining access to more system resources
+such as CPU or memory?\\
+
+\textbf{The Curx: How to perform restricted operations}
+
+A process must be able
+to perform I/O and some other restricted operations, but without giving the
+process complete control over the system.\\
+
+Two differend modes:
+
+\begin{itemize}
+    \item \textbf{User Mode:} Code that runs in user mode is restricted in what
+        it can do. For example, when running in user mode, a process can't
+        issure I/O requests; doing so would result in the processor raising an
+        exception.
+    \item \textbf{Kernal Mode:} Mode the operating system (or kernal) runs in.
+        In this mode, code that runs can do whatever it likes, including
+        privileged operations such as issuing I/O requests and executing
+        restricted instructions.
+\end{itemize}
+
+All modern hardware provides the ability for user programs to perform a 
+\textbf{system call}. System calls allow the kernal to carfully expose
+certain key pieces of functionality to user programs such as accessing the file
+system, creating and destroying the processes, communicationg with other
+processes, and allocating more memory.
+
+\paragraph{System calls}
+
+To execute a system call, a program must execute a special \textbf{trap}
+instruction. This instruction jumps into the kernal and raises privilege level
+to kernal mode; once in the kernal, the system can now perform the restricted 
+operations needed and thus the required work for the calling process. When 
+finished, the OS calls a special \textbf{return-from-trap} instruction, which
+returns into the calling user program while simultaneously reducing the 
+privilege level back to user mode.\\
+
+When executing a trap, the caller's registers must be saved in order to 
+return correctly when the OS issues the return-from-trap instruction.\\
+
+On x86, the processor will push the program counter, flags and a few other
+registers onto a per-process \textbf{kernal stack}; return-from-trap
+will pop these values from the stack and resume execution.
+
+\paragraph{How does the trap know which code to run inside the OS?}
+
+Clearly, the calling process can't specify and address to jump to; doing so 
+would allow programs to jump anywhere into the kernal which is not secure. The
+kernal must control what code executes upon a trap.\\
+
+The kernal does so by setting up a \textbf{trap table} at boot time. When the
+machine boots up, it does so in kernal mode. One of the first things the OS
+does is to tell the hardware what code to run when certain exceptional events
+occur. The OS informs the hardware of these locations of these
+\textbf{trap handlers}, usually with some kind of special instruction. Once
+the hardware is informed, it remembers the location of these handlers until
+the machine is rebooted, and thus hardware knows what to do when system calls
+and other exceptional events take place.\\
+
+To perform the exact system call, a \textbf{system-call number} is usually 
+asigned to each system call. The user code has to place the desired system-call
+number in a register or at a specific location in the stack; the OS, when
+handeling the system call inside the trap handler, examines the number,
+ensures it is valid, and, if it is, executes the corresponding code. This
+level of indirection serves as a form of \textbf{protection}; user code cannot
+specify an exact address to jump to, but rather must request a particular 
+service via a number.\\
+
+Telling the hardware where the trap tables are is a \textbf{privileged} 
+operationg, otherwise you could make your own trap tables and compromise the
+system.\\
+
+How all this works:
+
+\begin{enumerate}
+    \item At boot time, the kernal initializes the trap table, and the CPU
+        remembers its location for subsequent use. The kernal does so via
+        a privileged instruction.
+    \item The kernal sets up a few things (allocating memory, etc.) before
+        using a return-from-trap instruction to start the execution of the 
+        process. When the process wishes to issue a system call, it traps back
+        into the OS, which handles it and once again returns control via a 
+        return-from-trap to the process. The process completes its work and 
+        returns from main().
+\end{enumerate}
+
+\subsubsection{Problem \#2: Switching Between Processes}
+
+When a process is running on the CPU, this by definition means the OS is
+\textit{not} running. If OS isnt running how can
+it change a process? (it cant).\\
+
+\textbf{The Crux: How to regain control of the CPU?}
+
+How can the operating system \textbf{regain control} of the CPU so that it can
+switch between processes?\\
+
+Two approaches can be taken:
+
+\begin{itemize}
+    \item \textbf{Cooperative Approach:} Wait for system calls
+
+        In this approach, the OS regains control of the CPU by waiting for a 
+        system call or an illegal operation of some kind to take place, as
+        control is passed to the OS during these exceptions.
+\end{itemize}
