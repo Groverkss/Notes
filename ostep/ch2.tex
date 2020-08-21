@@ -1,4 +1,4 @@
-\chapter{Virtualisation}
+\chapter{CPU Virtualisation}
 
 \section{The Abstraction: The Process}
 
@@ -148,14 +148,59 @@ it change a process? (it cant).\\
 \textbf{The Crux: How to regain control of the CPU?}
 
 How can the operating system \textbf{regain control} of the CPU so that it can
-switch between processes?\\
+switch between processes?
 
-Two approaches can be taken:
+\paragraph{Cooperative Approach: Wait for system calls}
+
+In this approach, the OS regains control of the CPU by waiting for a 
+system call or an illegal operation of some kind to take place, as
+control is passed to the OS during these exceptions.
+
+\paragraph{Non-Cooperative Approach: The OS takes control}
+
+If we get stuck in an infinite loop in the cooperative approach, the only way
+out is to reboot the machine.\\
+
+\textbf{The Crux: How to gain control without cooperation} 
+
+How can the OS gain control of the CPU even if processes are not being
+cooperative? What can the OS do to ensure a rogue process does not take over
+the machine?\\
+
+\textbf{Timer interrupt:} A timer device is programmed to raise an interrupt
+after a fixed delay; when the interrupt is raised, the currently running
+process is halted, and a pre-configured \textbf{interrupt handler} in the OS
+runs. Now the OS has regained control of the CPU, and thus can stop the 
+current process and start a different one.\\
+
+At boot time, the OS starts the interrupt timer. This is a privileged
+operation.
+
+\paragraph{Saving and Restoring Context}
+
+The OS has regained control now. It can decide to switch or not. This decision
+is made by the \textbf{scheduler}.\\
+
+If the decision is to switch, the OS executes a \textbf{context switch}. A
+context switch saves register values of the currently-executing process and
+restores register values for the soon-to-be-executing process. After this, 
+the OS executes a return-from-trap instruction and executes the new process.\\
+
+By switching stacks pointers (stack pointer is a register),
+the kernel enters call to the switch code in the 
+context of one process (the interrupted one) amd returns in the context of
+another (the soon-to-be-executing one). By switching stack is actually how the
+process is switched.\\
+
+There are two types of register saves/restores that happen here:
 
 \begin{itemize}
-    \item \textbf{Cooperative Approach:} Wait for system calls
-
-        In this approach, the OS regains control of the CPU by waiting for a 
-        system call or an illegal operation of some kind to take place, as
-        control is passed to the OS during these exceptions.
+    \item When the timer interrupt occurs. The \textit{user registers} of the
+        running process are implicitly saved by the \textit{hardware}, using
+        the kernal stack of the process.
+    \item When OS performs the context switch. The \textit{kernal registers} 
+        are explicitly saved by the \textit{software} (i.e. th OS), but this
+        time into memory in the process structure of the process.
 \end{itemize}
+
+

@@ -1,0 +1,73 @@
+\chapter{What is Computation}
+
+\section{The Turing Machine}
+
+\subsection{Attributes of \textbf{Machine}}
+
+\begin{itemize}
+    \item Machines are not Omnipresent\\
+        It takes non-zero time to retrieve data from far-off locations\\
+
+        (fig)\\
+
+        "Very Large" memories are inherently \textbf{sequential}.
+    \item Machines are not Omniscient\\
+        Only finite information can be stores/retrieved from finite volume\\
+
+        (fig)\\
+
+        \textbf{Finite set} of tape symbols.
+    \item Machines are not Omnipotent\\
+        A finite length code only exerts finite amount of control\\
+
+        (fig)
+\end{itemize}
+
+\subsection{Turing Machine Defination}
+
+The \textit{Simplest} Programming Language\\
+
+\begin{itemize}
+    \item TM is a 7-tuple (Q, sigma, r, delta, $q_0$, $q_{accept}$,
+        $q_{reject}$)
+        \begin{itemize}
+            \item Q is the finite set of states
+            \item sigma is the finite input alphabest set, not containing
+                blank
+            \item r is the finite tape alphabet, with blank
+            \item delta: (Q $\times$ R) to (Q $\timex$ r $\timex$ )
+        \end{itemize}
+\end{itemize}
+
+\textbf{C-Programs Are Turing Complete}\\
+
+No C-program exists Implies No Algorithm/Machine exists!\\
+
+\section{Recognizing Versus Deciding Languages}
+
+A TM M \textbf{recognizes} language L if:
+
+For all $w$ in $L$, $M$ accepts $w$\\
+For all $w$ not in $L$, $M$ does not accept $w$\\
+
+A TM M \textbf{decides} language L if:
+
+For all $w$ in $L$, $M$ accepts $w$\\
+For all $w$ in $L$m $M$ rejects $w$\\
+
+There is difference in \textit{rejects} and \textit{does not accept}. 
+
+\section{Decidability and Recognizability}
+
+\begin{itemize}
+    \item L is decidable if some TM M decides L
+    \item L is recognizable if some TM M recognizes L
+    \item Recursive Class (R): The set of all decidable languages
+    \item Recursively Enumerable Class (RE): The set of all recognizable 
+        languages
+    \item 
+\end{itemize}
+
+\subsection{Languages that are recognizable but not decidable}
+
+
