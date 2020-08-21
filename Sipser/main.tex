@@ -1,0 +1,47 @@
+\documentclass{book}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{tikz}
+\usepackage{circuitikz}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{titling}
+\usepackage{amsthm}
+\usepackage{algorithm}                                                          
+\usepackage{algorithmic}                                                        
+                                                                                
+% Theorem macros                                                                
+\newtheorem{theorem}{Theorem}                                                   
+\newtheorem{claim}[theorem]{Claim}                                              
+\newtheorem{proposition}[theorem]{Proposition}                                  
+\newtheorem{lemma}[theorem]{Lemma}                                              
+\newtheorem{corollary}[theorem]{Corollary}                                      
+\newtheorem{conjecture}[theorem]{Conjecture}                                    
+\newtheorem*{observation}{Observation}                                          
+\newtheorem*{example}{Example}                                                  
+\newtheorem*{remark}{Remark}       
+\newtheorem{defination}{Defination}
+
+\newcommand{\R}{\ensuremath{\mathbb{R}}}
+\newcommand{\N}{\ensuremath{\mathbb{N}}}
+
+\title{\huge Intro to Complexity Theory}
+\author{Kunwar Shaanjeet Singh Grover}
+\date{}
+
+
+\setcounter{tocdepth}{2}
+
+\begin{document}
+
+\pagenumbering{gobble}
+\maketitle
+\newpage
+\pagenumbering{arabic}
+\tableofcontents
+
+\include{ch1}
+\include{ch2}
+
+\end{document}
