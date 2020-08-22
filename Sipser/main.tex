@@ -8,20 +8,21 @@
 \usepackage{graphicx}
 \usepackage{titling}
 \usepackage{amsthm}
+\usepackage{mdframed}
 \usepackage{algorithm}                                                          
 \usepackage{algorithmic}                                                        
                                                                                 
 % Theorem macros                                                                
-\newtheorem{theorem}{Theorem}                                                   
-\newtheorem{claim}[theorem]{Claim}                                              
-\newtheorem{proposition}[theorem]{Proposition}                                  
-\newtheorem{lemma}[theorem]{Lemma}                                              
-\newtheorem{corollary}[theorem]{Corollary}                                      
-\newtheorem{conjecture}[theorem]{Conjecture}                                    
+\newmdtheoremenv{theorem}{Theorem}                                                   
+\newmdtheoremenv{claim}[theorem]{Claim}                                              
+\newmdtheoremenv{proposition}[theorem]{Proposition}                                  
+\newmdtheoremenv{lemma}[theorem]{Lemma}                                              
+\newmdtheoremenv{corollary}[theorem]{Corollary}                                      
+\newmdtheoremenv{conjecture}[theorem]{Conjecture}                                    
 \newtheorem*{observation}{Observation}                                          
 \newtheorem*{example}{Example}                                                  
 \newtheorem*{remark}{Remark}       
-\newtheorem{defination}{Defination}
+\newmdtheoremenv{defination}{Defination}
 
 \newcommand{\R}{\ensuremath{\mathbb{R}}}
 \newcommand{\N}{\ensuremath{\mathbb{N}}}

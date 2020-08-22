@@ -253,11 +253,62 @@ how to convert DFAs into GNFAs, and then GNFAs into regular expressions.\\
 GNFA are simply NDA wherein the transition arrows may have any regular
 expression as labels, instead of only members of the alphabet or $\epsilon$.
 
-\begin{figure}
+\begin{figure}[h!]
     \begin{center}
         \includegraphics[width=5cm]{img/161.png}
         \caption{A generalized nondeterministic finite automaton}
     \end{center}
 \end{figure}
 
+For convenience, we require that GNFAs always have a special form that meets
+the following conditions.
+
+\begin{itemize}
+    \item The start state has transition arrows going to every other state but
+        no arrows coming in from any other state.
+    \item There is only a single accept state, and it has arrows coming in
+        from every other state but no arrows going to any other state. 
+        Furthermore, the accept state is not the same at the start state.
+    \item Except for the start and accept states, one arrow goes from the
+        every state to every other state and also from each state to itself.
+\end{itemize}
+
+It is easy to convert a DFA into a GNFA in the special form. We simply add a
+new start state with an $\epsilon$ to the old start state and a new accept
+state with $\epsilon$ arrows from the old accept states. If any arrows have
+multiple labes, we take union of the previous labels. Finally, we add arrows
+labeled $\phi$ between states that had no arrows.\\
+
+To convert GNFA into a regular expression, we take a $k$ state GNFA, and form 
+an equivalent $k - 1$ state GNFA. If $k = 2$, The GNFA has a single arrow
+from accept state to the end state, the label of which is the required 
+regular expression.\\
+
+To construct a GNFA with one fewer state, we do this:
+
+\begin{figure}[h!]
+    \begin{center}
+        \includegraphics[width=5cm]{img/163.png}
+        \caption{Constructing an equivalent GNFA with one fewer state}
+    \end{center}
+\end{figure}
+
+We do this for every pair $q_i. q_j$.
+
+Formal Defination:
+
+\begin{defination}
+    A \textbf{generalized nondeterministic finite automaton} is a 5-tuple,
+    $(Q, \sum, \delta, q_{start}, q_{accept})$, where
+    \begin{enumerate}
+        \item $Q$ is the finite set of states,
+        \item $\sum$ is the input alphabet,
+        \item $\delta: (Q - \{q_{accept}\}) \times (Q - \{q_{start}\}) 
+            \rightarrow R$ is the transition function,
+        \item $q_{start}$ is the start state, and
+        \item $q_{accept}$ is the accept state.
+    \end{enumerate}
+\end{defination}
+
+\section{Non-Regular Languages}
 
