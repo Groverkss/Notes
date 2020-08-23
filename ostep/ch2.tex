@@ -4,9 +4,11 @@
 
 \textbf{Process:} A running program.\\
 
-\textbf{Crux Of The Problem:} Although there are only a few physical CPUs
-available, how can the OS provide the ullusion of nearly-endless supply of 
-said CPUs?\\
+\begin{tcolorbox}
+    \textbf{Crux Of The Problem:} Although there are only a few physical CPUs
+    available, how can the OS provide the ullusion of nearly-endless supply of 
+    said CPUs?\\
+\end{tcolorbox}
 
 The OS creates this illusion by \textbf{virtualizing} the CPU. By running
 one process, then stopping it and running another, and so forth, the OS can
@@ -25,7 +27,9 @@ Policies: Provides answer to a \textit{which} question.\\
 
 \section{Mechanism: Limited Direct Execution}
 
-\textbf{The Crux: How to efficiently virtualize the CPU with control?}
+\begin{tcolorbox}
+    \textbf{The Crux:} How to efficiently virtualize the CPU with control?
+\end{tcolorbox}
 
 The OS must virtualize the CPU in an efficient manner while retaining control
 over the system. To do so, both hardware and operating-system support will be
@@ -55,11 +59,13 @@ What if the process wishes to perform some kind of restricted operation, such
 as issuing an I/O request to a disk, or gaining access to more system resources
 such as CPU or memory?\\
 
-\textbf{The Curx: How to perform restricted operations}
+\begin{tcolorbox}
+    \textbf{The Curx: How to perform restricted operations}
 
-A process must be able
-to perform I/O and some other restricted operations, but without giving the
-process complete control over the system.\\
+    A process must be able
+    to perform I/O and some other restricted operations, but without giving the
+    process complete control over the system.\\
+\end{tcolorbox}
 
 Two differend modes:
 
@@ -145,10 +151,12 @@ When a process is running on the CPU, this by definition means the OS is
 \textit{not} running. If OS isnt running how can
 it change a process? (it cant).\\
 
-\textbf{The Crux: How to regain control of the CPU?}
+\begin{tcolorbox}
+    \textbf{The Crux: How to regain control of the CPU?}
 
-How can the operating system \textbf{regain control} of the CPU so that it can
-switch between processes?
+    How can the operating system \textbf{regain control} of the CPU so that it can
+    switch between processes?
+\end{tcolorbox}
 
 \paragraph{Cooperative Approach: Wait for system calls}
 
@@ -161,11 +169,13 @@ control is passed to the OS during these exceptions.
 If we get stuck in an infinite loop in the cooperative approach, the only way
 out is to reboot the machine.\\
 
-\textbf{The Crux: How to gain control without cooperation} 
+\begin{tcolorbox}
+    \textbf{The Crux: How to gain control without cooperation} 
 
-How can the OS gain control of the CPU even if processes are not being
-cooperative? What can the OS do to ensure a rogue process does not take over
-the machine?\\
+    How can the OS gain control of the CPU even if processes are not being
+    cooperative? What can the OS do to ensure a rogue process does not take over
+    the machine?\\
+\end{tcolorbox}
 
 \textbf{Timer interrupt:} A timer device is programmed to raise an interrupt
 after a fixed delay; when the interrupt is raised, the currently running
@@ -203,4 +213,6 @@ There are two types of register saves/restores that happen here:
         time into memory in the process structure of the process.
 \end{itemize}
 
+\section{Scheduling}
 
+In this section we 
