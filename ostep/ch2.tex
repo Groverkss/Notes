@@ -215,4 +215,254 @@ There are two types of register saves/restores that happen here:
 
 \section{Scheduling}
 
-In this section we 
+In this section we will understand \textbf{policies} that OS scheduling
+employs.\\
+
+\begin{tcolorbox}
+    \textbf{The Crux: How To Develop Scheduling Policy}\\
+
+    How should we develop a basic framework for thinking about scheduling
+    policies? What are the key assumptions? What metrics are important? What
+    basic approaches have been used in earliest of computer systems?
+\end{tcolorbox}
+
+We will make some assumptions and continue to relax them to get to an optimal
+policy. Assumptions:
+
+\begin{enumerate}
+    \item Each job runs for the same amount of time.
+    \item All jobs arrive at the same time.
+    \item Once started, each job runs to completion
+    \item All jobs only use the CPU (i.e., they perform no I/O)
+    \item The run-time of each job is known
+\end{enumerate}
+
+For now, we will use a single metric to determine optimal policy:
+\textbf{turnaround time}.
+
+$$
+T_{turnaround} = T_{completion} - T_{arrival}
+$$
+
+\subsection{First In, First Out (FIFO)}
+
+\begin{figure}[h!]
+    \begin{center}
+        \includegraphics[width=5cm]{img/71.png}
+        \caption{FIFO Simple Example}
+    \end{center}
+\end{figure}
+
+For our current assumptions, this is optimal. But if we relax the assumption
+that job running time are same, we can get bad turnaround time:
+
+\begin{figure}[h!]
+    \begin{center}
+        \includegraphics[width=5cm]{img/72.png}
+        \caption{Why FIFO is Not that Great}
+    \end{center}
+\end{figure}
+
+\subsection{Shortest Job First (SJF)}
+
+\begin{figure}[h!]
+    \begin{center}
+        \includegraphics[width=5cm]{img/73.png}
+        \caption{SJF Simple Example}
+    \end{center}
+\end{figure}
+
+It can be proven that under these assumptions, SJF will give the best
+turnaround time.\\
+
+Now, lets relax the assumption that all jobs arrive  at the same time. Now,
+we can build a worst case for SJF:
+
+\begin{figure}[h!]
+    \begin{center}
+        \includegraphics[width=5cm]{img/74}
+        \caption{SJF With Late Arrivals from B and C}
+        \label{74}
+    \end{center}
+\end{figure}
+
+\subsection{Shortest Time-To-Completion First (STCF)}
+
+To address this concern, we need to relax assumption 3 (jobs started, must run
+to completion). SJF by our defination was a \textbf{non-preemptive} scheduler,
+and thus suffered from the problems in figure \ref{74}.\\
+
+To improve upon that, we add preemption to SJF, known as STCF. Any time
+a new job enters the system, the STCF schedular determines which of the
+remaining jobs has least time left, and schedules that. It can be proven
+that under the current assumptions, this is the best schedular
+(w.r.t turnaround time)
+
+\begin{figure}[h!]
+    \begin{center}
+        \includegraphics[width=5cm]{img/75}
+        \caption{STCF Simple Example}
+    \end{center}
+\end{figure}
+
+\textbf{New Metric: Response Time}: If our only metric was turnaround time and
+we knew job runtime, STCF would be a great policy. But inroduction of
+time-sharing machines, required interactive performance from sustem as well.
+Thus a new metric was needed: \textbf{response time}
+
+$$
+T_{response} = T_{firstrun} - T_{arrival}
+$$
+
+\subsection{Round Robin}
+
+To improve upon response time, we introduce \textbf{Round-Robin (RR)}
+scheduling. Basic idea: Instead of running a job to completion, RR runs a job
+for a \textbf{time slice} (or \textbf{scheduling quantum}) and then switches
+to the next job in the run queue.\\
+
+The length of time-slice is obviously a multiple of timer-interupt.\\
+
+\begin{figure}[h!]
+    \begin{center}
+        \includegraphics[width=4cm]{img/76}
+        \caption{SJF (Bad response time)}
+    \end{center}
+\end{figure}
+
+\begin{figure}[h!]
+    \begin{center}
+        \includegraphics[width=4cm]{img/77}
+        \caption{RR (Good response time)}
+    \end{center}
+\end{figure}
+
+The length of time slice is critical for RR. The shorter it is, the better
+performance of RR under response-time metric. However, too small time-slice can
+result in time taken to context switch to dominate overall performance. Thus,
+time slices hould be made long enough to  \textbf{amortize} the cost of
+switching without making it so long that system is no longer responsive.\\
+
+RR is one of the \textit{worst} policies for turnaround time because it extends
+the program to as long as possible.
+
+\subsubsection{Incorporating I/O}
+
+We now relax assumption that there is no I/O. When a job initiates an I/O
+request, because the currently-running job won't be using the CPU during the
+I/O; it is \textbf{blocked} waiting for the I/O completion. The CPU is idle
+during the time of the I/O.\\
+
+The scheduler incorporates I/O by treating each CPU burst as a job. the
+scheduler makes sure processes that are "interactive" get run frequently. While
+those interactive jobs are performing I/O, other CPU-intensive jobs run, thus
+better utilizing the processor.
+
+\subsection{The Multi-Level Feedback Queue}
+
+In this subsection, we remove the assumption that we know job time and 
+we will describe the most well-known approach to
+scheduling, \textbf{MLFQ}. \\
+
+\begin{tcolorbox}
+    \textbf{The Crus: How To Schedule Without Perfect Knowledge?}\\
+
+    How can we design a schedular that both minimizes response time for
+    interactive jobs while also minimizing turnaround time without a
+    \textit{prior} knowledge of job length?\\
+\end{tcolorbox}
+
+MLFQ has a number of distinct \textbf{queues}, each assigned a different 
+\textbf{priority level}. MLFQ uses priorities to decide which job should run
+at a given time. Basic rules for MLFQ:
+
+\begin{enumerate}
+    \item If Priority(A) $>$ Priority(B), A runs (B doesn't)
+    \item If Prority(A) = Priority(B), A \& B run in RR.
+\end{enumerate}
+
+Rather than giving a fixed priority to each job, MLFQ \textit{varies} the
+priority of a job based on its \textit{observed behavior}.\\
+
+If a job repeatedly relinquishes the CPU while
+waiting for input from the keyboard, 
+MLFQ will keep its priority high, as this is how an interactive process might
+behave. If a job uses the CPU intensively for long periods of time, MLFQ will
+reduce its priority. In this way, MLFQ will try to \textit{learn} about 
+processes as they run, and thus use the \textit{history} of the job to
+predict its \textit{future} behavior.
+
+\begin{figure}[h!]
+    \begin{center}
+        \includegraphics[width=5cm]{img/81.png}
+        \caption{MLFQ Example}
+    \end{center}
+\end{figure}
+
+\subsubsection{Attempt \#1: How to Change Priority}
+
+Keep in mind: Our workload contains a mix of interactive jobs taht are short
+running (and may frequently relinquish the CPU), and some longer running
+"CPU-bound" jobs that need a lot of CPU time but where the response time
+isn't important. Here is the first attempt at an algoritm:
+
+\begin{enumerate}
+        \setcounter{enumi}{2}
+    \item When a job enters the system, it is placed at highest
+        priority (the topmost queue)
+    \item 
+        \begin{itemize}
+            \item If a job uses up an entire time slice while running, 
+                its priority is \textit{reduced}.
+            \item If a job gives up the CPU before the time slice is up,
+                it staus at the \textit{same} priority level.
+        \end{itemize}
+\end{enumerate}
+
+\subsection{Problems with current MLFQ}
+
+There is a problem of \textbf{starvation:} if there are "too many" interactive
+jobs in the system, they will combine to consume \textit{all} CPU time, and
+thus long-running jobs will \textit{never} receive any CPU time.\\
+
+Another problem is that the schedular can be \textbf{gamed}. Gaming a schedular
+refers to the idea to tricking the schedular in giving more time than the job's
+share. Before the time-slice is over, the job could issue and I/O and remain
+at the same priority. Doing so, allows the program to gain a higher percentage
+of CPU time.
+
+\subsection{Attemp \#2: The Priority Boost}
+
+We add a new rule to handle the flaws. 
+
+\begin{enumerate}
+        \setcounter{enumi}{4}
+    \item After some time period $S$, move all the jobs in the system to the
+        topmost queue.
+\end{enumerate}
+
+This solves the problem of starvation. $S$ has to be set properly.
+
+\subsection{Attempt \#3: Better Accounting}
+
+We rewrite Rule 4 to make it anti-gaming.
+
+\begin{enumerate}
+        \setcounter{enumi}{3}
+    \item Once a job uses its time allotment at a given level (regardless of
+        how many times it has given up the CPU), its priority is reduced.
+\end{enumerate}
+
+\begin{tcolorbox}
+    \textbf{MLFQ: Summary}
+    \begin{enumerate}
+        \item If Priority(A) $>$ Priority(B), A runs (B doesn't)
+        \item If Priority(A) = Priority(b), A \& B run in round-robin fashion
+            using the time slice of the given queue.
+        \item When a job enters the system, it is placed at the highest
+            priority.
+        \item Once a job uses up its time allotment at a given level, its
+            priority is reduced.
+        \item After some period $S$, move all jobs to the topmost queue.
+    \end{enumerate}
+\end{tcolorbox}
