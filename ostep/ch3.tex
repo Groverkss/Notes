@@ -1,0 +1,23 @@
+\chapter{Memory Virtualization}
+
+\section{The Abstraction: Address Space}
+
+\textbf{Address Space: The running program's view of memory in the system}
+
+\begin{tcolorbox}
+    \textbf{The Crux: How to Virtualize Memory?}
+
+    How can the OS build this abstraction of a provate, potentially large
+    address space for multiple running processes (all sharing memory) on 
+    top of a single, physical memoty?
+\end{tcolorbox}
+
+Goals of OS while virtualizing memory
+
+\begin{enumerate}
+    \item Transparency: How OS implements virtual memory should be invisible
+        to the running program.
+    \item Efficiency
+    \item Protection: A process should not be able to access memory out of
+        its virtual memory
+\end{enumerate}
