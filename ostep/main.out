@@ -1,0 +1,44 @@
+\BOOKMARK [0][-]{chapter.1}{Introduction}{}% 1
+\BOOKMARK [1][-]{section.1.1}{Virtualisation}{chapter.1}% 2
+\BOOKMARK [2][-]{subsection.1.1.1}{CPU Virtualisation}{section.1.1}% 3
+\BOOKMARK [2][-]{subsection.1.1.2}{Memory Virtualisation}{section.1.1}% 4
+\BOOKMARK [1][-]{section.1.2}{Concurrency}{chapter.1}% 5
+\BOOKMARK [1][-]{section.1.3}{Presistence}{chapter.1}% 6
+\BOOKMARK [0][-]{chapter.2}{CPU Virtualisation}{}% 7
+\BOOKMARK [1][-]{section.2.1}{The Abstraction: The Process}{chapter.2}% 8
+\BOOKMARK [1][-]{section.2.2}{Mechanism: Limited Direct Execution}{chapter.2}% 9
+\BOOKMARK [2][-]{subsection.2.2.1}{Basic Technique: Limited Direct Execution}{section.2.2}% 10
+\BOOKMARK [3][-]{section*.2}{Problem \0431: Restricted Operations}{subsection.2.2.1}% 11
+\BOOKMARK [3][-]{section*.5}{Problem \0432: Switching Between Processes}{subsection.2.2.1}% 12
+\BOOKMARK [1][-]{section.2.3}{Scheduling}{chapter.2}% 13
+\BOOKMARK [2][-]{subsection.2.3.1}{First In, First Out \(FIFO\)}{section.2.3}% 14
+\BOOKMARK [2][-]{subsection.2.3.2}{Shortest Job First \(SJF\)}{section.2.3}% 15
+\BOOKMARK [2][-]{subsection.2.3.3}{Shortest Time-To-Completion First \(STCF\)}{section.2.3}% 16
+\BOOKMARK [2][-]{subsection.2.3.4}{Round Robin}{section.2.3}% 17
+\BOOKMARK [3][-]{section*.9}{Incorporating I/O}{subsection.2.3.4}% 18
+\BOOKMARK [2][-]{subsection.2.3.5}{The Multi-Level Feedback Queue}{section.2.3}% 19
+\BOOKMARK [3][-]{section*.10}{Attempt \0431: How to Change Priority}{subsection.2.3.5}% 20
+\BOOKMARK [2][-]{subsection.2.3.6}{Problems with current MLFQ}{section.2.3}% 21
+\BOOKMARK [2][-]{subsection.2.3.7}{Attemp \0432: The Priority Boost}{section.2.3}% 22
+\BOOKMARK [2][-]{subsection.2.3.8}{Attempt \0433: Better Accounting}{section.2.3}% 23
+\BOOKMARK [0][-]{chapter.3}{Memory Virtualization}{}% 24
+\BOOKMARK [1][-]{section.3.1}{The Abstraction: Address Space}{chapter.3}% 25
+\BOOKMARK [1][-]{section.3.2}{Mechanisms}{chapter.3}% 26
+\BOOKMARK [2][-]{subsection.3.2.1}{Dynamic\(Hardware-based\) Relocation}{section.3.2}% 27
+\BOOKMARK [2][-]{subsection.3.2.2}{Segmentation}{section.3.2}% 28
+\BOOKMARK [3][-]{section*.13}{Which Segment Are We Referring To?}{subsection.3.2.2}% 29
+\BOOKMARK [3][-]{section*.14}{Support for Sharing}{subsection.3.2.2}% 30
+\BOOKMARK [3][-]{section*.15}{OS Support}{subsection.3.2.2}% 31
+\BOOKMARK [1][-]{section.3.3}{Paging}{chapter.3}% 32
+\BOOKMARK [2][-]{subsection.3.3.1}{Virtual Address Translation}{section.3.3}% 33
+\BOOKMARK [2][-]{subsection.3.3.2}{Where Are Page Tables Stored?}{section.3.3}% 34
+\BOOKMARK [2][-]{subsection.3.3.3}{What is in the Page Table?}{section.3.3}% 35
+\BOOKMARK [2][-]{subsection.3.3.4}{Paging: Also Too Slow}{section.3.3}% 36
+\BOOKMARK [2][-]{subsection.3.3.5}{Faster Translations \(TLBs\)}{section.3.3}% 37
+\BOOKMARK [3][-]{section*.16}{Who Handles The TLB Miss?}{subsection.3.3.5}% 38
+\BOOKMARK [3][-]{section*.17}{TLB Contents}{subsection.3.3.5}% 39
+\BOOKMARK [3][-]{section*.18}{Context switches with TLB}{subsection.3.3.5}% 40
+\BOOKMARK [3][-]{section*.19}{Replacement Policy}{subsection.3.3.5}% 41
+\BOOKMARK [2][-]{subsection.3.3.6}{Paging: Smaller Tables}{section.3.3}% 42
+\BOOKMARK [3][-]{section*.20}{Multi-level Page Tables}{subsection.3.3.6}% 43
+\BOOKMARK [1][-]{section.3.4}{Swapping}{chapter.3}% 44

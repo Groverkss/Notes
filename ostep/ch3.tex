@@ -457,3 +457,107 @@ process.
 
 The replacement policies are same as \textbf{cache replacement}. Duh, its a
 cache. What were you expecting? Anyway, this part is covered in swapping.
+
+\subsection{Paging: Smaller Tables}
+
+\begin{tcolorbox}
+    \begin{center}
+        \textbf{The Crux: How To Make Page Tables Smaller}
+    \end{center}
+
+    Simple array-based page tables are too big. How can we make page tables
+    smaller? What are the key ideas? What inefficiencies arise as a result of
+    these new data structures?
+\end{tcolorbox}
+
+Some solutions with their problems:
+
+\begin{itemize}
+    \item \textbf{Bigger Pages:} Can lead to internal fragmentation due to
+        pages not being used completly.
+    \item \textbf{Paging + Segments}: Divide segments into pages. Doesnt really
+        solve the main problem of segmentation i.e. external fragmentation.
+\end{itemize}
+
+\subsubsection{Multi-level Page Tables}
+
+Get rid of all the invalid regions in the page table instead of keeping them
+all in memory.\\
+
+We turn the linear page table into something like a tree. The basic idea is 
+simple, chop up the apge table into page-sized units; then if an entire page of
+page-table entries (PTEs) is invalid, dont allocate that page of the page table
+at all. To track wether a page of the page table is valid, use a new structure
+called the \textbf{page directory}. the page tells you where a page of the
+page table is or that the entire page of the page table contains no
+vali pages.
+
+\begin{figure}[h!]
+    \begin{center}
+        \includegraphics[width=5cm]{img/203.png}
+        \caption{2-Level Page Table}
+    \end{center}
+\end{figure}
+
+Advantages of Multi-level page tables:
+
+\begin{itemize}
+    \item They only allocate page-table space in proportion to the amount of
+        address space you are using; thus it is good for sparse address
+        spaces
+    \item If carefully constructed, each portion fits neatly within a page,
+        making it easier to manage memory.
+\end{itemize}
+
+It should be noted that there is a cost to multi-level tables; for the
+2-level page table, we required two loads from memory to get the right
+translation information from the page table (one for the page directory and
+one for the PTE itself). Smaller tables 
+give higher TLB miss cost but reduce space.
+This is a space-time tradeoff. The cost in a TLB hit is the same.\\
+
+We dont have to use only 2-level page tables. For larger physical memory, 
+we need to use higher level page tables to get smaller tables. We create a
+page directory of page directories and so on. Levels can be decided based on
+how much reduction we need.\\
+
+New code for Address translation:
+
+\begin{figure}[h!]
+    \begin{center}
+        \includegraphics[width=7cm]{img/206.png}
+        \caption{Mutli-level Page Table Control Flow}
+    \end{center}
+\end{figure}
+
+As it can be seen, only the cost of TLB miss has been increased and not that
+of a TLB miss.
+
+
+\section{Swapping}
+
+Now we relax the assumption that our address space is unrealistically small
+and fits into physical memory,
+
+\begin{tcolorbox}
+    \begin{center}
+        \textbf{The Crux: How To Go Beyond Physical Memory}
+    \end{center}
+
+    How can the OS make use of a larger, slower device to transparently provide
+    the illusion of a large virtual address space?
+\end{tcolorbox}
+
+First, we need to reserve some space for swaping. we generally refer to such
+space as \textbf{swap space}. Thus, we simply assume that the OS can read from
+and write to the swap space, in page-sized units. OS needs to remember the
+\textbf{disk address} of a given page to accomplish this.\\
+
+Now that we have some space on disk for swapping, we need to add machinery in
+the system to support swapping pages to and from the disk. We assume that we
+have a system with a hardware-managed TLB (like x86 has).\\
+
+We need to add more machinery to the \textbf{page table entry (PTE)}. It must
+now have a \textbf{preset bit}, which indicates wether the page is in memory.
+In the case that the hardware looks in the TLB and the page is \textit{not
+present} 
