@@ -1,0 +1,101 @@
+\chapter{Context Free Languages}
+
+\section{Context-Free Grammers}
+
+Example of a context-free grammer we will call $G_1$:
+
+\begin{align*}
+    A &\rightarrow 0A1 \\
+    A &\rightarrow B \\  
+    B &\rightarrow \# \\
+\end{align*}    
+
+Each grammer consists of a collection of \textbf{substitution rules}, also
+called \textbf{production}. Each rule appears as a line in the grammer, 
+comprising a symbol and a string separeated by an arrow. The symbol is called
+a \textbf{variables}. The string consists of variables and other symbols called
+the \textbf{terminals}. Often the variable symbols are captial letters. terminals
+are similar to alphabet and are often represented by lowercase letters, numbers,
+or special symbols.
+
+You use a grammer to describe a language by generating each string of that
+language as follows:
+
+\begin{enumerate}
+    \item Write down the start variable. Usually the left-hand side top rule.
+    \item Find a variable written down and a rule starting witht hat variable.
+        Replace the written down variable with the right-hand side of that rule.
+    \item Repeat step 2 until no varialbes remain.
+\end{enumerate}
+
+For example, 
+
+$$
+A \rightarrow 0A1 \rightarrow 00A11 \rightarrow 000B111 \rightarrow 000\#111
+$$
+
+All strings generated in this way constitute the \textbf{language of the grammer}.
+
+\subsection{Formal Defination Of A Context-Free Grammer} 
+
+\begin{defination}
+    A \textbf{context-free grammer} is a 4-tuple $(V, \sum, R, S)$, where
+    \begin{enumerate}
+        \item $V$ is a finite set called \textbf{variables}.
+        \item $\sum$ is a finite set, disjoint from $V$, called the \textbf{terminals},
+        \item $R$ is a finite set of \textbf{rules}, with each rule beign
+            a variable and a string of variables and terminals, and
+        \item $S \in V$ is the start variables
+    \end{enumerate}
+\end{defination}
+
+If $u, v$ and $w$ are string of variables and terminals, and $A \rightarrow w$
+is a rule of the grammer, we say that $uAv$ \textbf{yields} $uwv$, written
+$uAv \implies uwv$. Say that $u$ \textbf{derives} $v$m written
+$u \derives$, if $u = v$ or if a sequence $u_1, u_2, \dots, u_k$ exists for
+$k \ge 0$ and 
+
+$$
+u \implies u_1 \implies u_2 \implies \dots \implies u_k \implies v
+$$
+
+The \textbf{language of the grammer} is $\{w \in \sum^{*} \mid S \derives w\}$
+
+\subsection{Ambiguity}
+
+If a grammer generates the same string in several different ways, we say that
+the string is derived \textit{ambiguously} in that grammer. If a grammer 
+generates some string ambigously, we say that the grammer is \textit{ambiguous}.
+
+When we say that a grammer generates a string ambiguously, we mean that
+the string has two different parse trees, not two different derivations. 
+Two derivations may differ merely in the order in which the replace variables
+and not the overall strucutre. to concentrate on structure, we define a type of
+derivation that replaces variables in a fixed order. A derivation of a string
+$w$ in a grammer $G$ is a \textbf{leftmost derivation} if at every step the
+leftmost remaining variable is the one replaced.
+
+\begin{defination}
+    A string $w$ is derived \textbf{ambiguously} in a context-free grammer $G$
+    if it has two or more different leftmost derivations. Grammer $G$ is 
+    \textbf{ambiguous} if it generates some string ambiguously.
+\end{defination}
+
+Some context-free languages can be generated only by ambiguous grammers. Such
+languages are \textbf{inherently ambiguous}.
+
+\subsection{Chomsky Normal Form} 
+
+\begin{defination}
+    A context-free grammer is in \textbf{Chomsky normal form} if every rule
+    is of the form:
+
+    \begin{align*}
+        A &\rightarrow BC \\
+        A &\rightarrow a
+    \end{align*}
+
+    where $a$ is any terminal and $A, B, and C$ are any variables. except that
+    $B$ and $C$ may not be the start variable. In addition, we permit the rule
+    $S \rightarrow \epsilon$, where $S$ is the start variable.
+\end{defination}

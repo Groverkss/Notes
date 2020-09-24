@@ -560,4 +560,16 @@ have a system with a hardware-managed TLB (like x86 has).\\
 We need to add more machinery to the \textbf{page table entry (PTE)}. It must
 now have a \textbf{preset bit}, which indicates wether the page is in memory.
 In the case that the hardware looks in the TLB and the page is \textit{not
-present} 
+present}, the OS is invoked to service the \textbf{page fault}. The handler
+invoked is called \textbf{page-fault handler}. It runs and services the page
+fault.\\
+
+When the OS receives a page fault for a page, it looks in the PTE to find the
+address, and request to disk to fetch page into memory. When disk I/O completes
+, the OS will then update the page table to mark the page as present, update
+the PFN field of the page-entry (PTE) to record the in-memory location of
+the newly-fetched page, and retry the instruction. While the I/O is in flight, 
+the process will be blocked and the OS is free to execute other processes.\\
+
+In the process above, if the memory is full then we use a \textbf{page
+replacement policy} to kick out, or replace pages from memory.
