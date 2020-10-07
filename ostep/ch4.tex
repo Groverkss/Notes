@@ -40,7 +40,7 @@ shared variable.
 \begin{figure}[h!]
     \begin{center}
         \includegraphics[width=9cm, height=7cm]{img/266.png}
-        \caption{Sharding Data Problem}
+        \caption{Sharing Data Problem}
     \end{center}
 \end{figure}
 
@@ -132,9 +132,11 @@ balance = balance + 1;
 $$
 
 Other critical sections are possible, but when we genearlize the principle, it
-does not matter. To use a lock, we add it around the critical section like this:
+does not matter. To use a lock, we add it around the critical section as shown
+in \ref{lockinit}
 
 \begin{figure}[h!]
+    \label{lockinit}
     \begin{center}
         \includegraphics[width=7cm, height=3cm]{img/lockinit.png}
         \caption{Using a lock}
@@ -219,8 +221,9 @@ Let's try building a simple lock by using a single flag variable:
 This code has two problems.\\
 
 \begin{enumerate}
-    \item Correctness: This code does not provide mutual exclusion:
+    \item Correctness: This (\ref{282}) code does not provide mutual exclusion
         \begin{figure}[h!]
+            \label{282}
             \begin{center}
                 \includegraphics[width=7cm, height=3cm]{img/282.png}
                 \caption{No Mutual Exclusion}
@@ -236,19 +239,22 @@ This code has two problems.\\
 \subsubsection{Working Sping Locks with Test-And-Set}
 
 Today, all systems provide support for an atmoic intsruction to do a
-\textbf{test-and-set} (or \textbf{atmoic exchange}). This instruction does this
-atomically:
+\textbf{test-and-set} (or \textbf{atmoic exchange}). This (\ref{testandset})
+instruction does this atomically.
 
 \begin{figure}[h!]
+    \label{testandset}
     \begin{center}
         \includegraphics[width=8cm, height=2cm]{img/testandset.png}
         \caption{Test and Set}
     \end{center}
 \end{figure}
 
-This \textbf{atmoic} instruction is enough to build a \textbf{spin lock}:
+This \textbf{atmoic} instruction is enough to build a \textbf{spin lock} as
+shown in \ref{283}
 
 \begin{figure}[h!]
+    \label{283}
     \begin{center}
         \includegraphics[width=7cm, height=5cm]{img/283.png}
         \caption{A Working Spin Lock}
@@ -349,9 +355,10 @@ threads acquires the lock after the current holder releases it.\\
 
 We use an OS primitive: $park()$ which puts the calling thread to sleep and
 $unpark()$ to wake a particular thread. Using this we can build a lock which
-solves our problems:
+solves our problems as shown in \ref{289}.
 
 \begin{figure}[h!]
+    \label{289}
     \begin{center}
         \includegraphics[width=8cm, height=9cm]{img/289.png}
         \caption{Locks with queues, test-and-set, yield, and wakeup}
@@ -377,9 +384,11 @@ This problem can be solved by another OS primitive called $setpark()$. By
 calling this routine, a thread can indicate it is \textit{about} to park.
 If it then happens to be interrupted and another thread calls unpark
 before park is actuall called, the subsquent park returns immediately instead
-of sleeping. The code modification, inside the $lock()$, is quite small:
+of sleeping. The code modification, inside the $lock()$, is quite small as shown
+in \ref{setpark}
 
 \begin{figure}[h!]
+    \label{setpark}
     \begin{center}
         \includegraphics[width=7cm, height=2cm]{img/setpark.png}
         \caption{Using setpark}
@@ -388,3 +397,134 @@ of sleeping. The code modification, inside the $lock()$, is quite small:
 
 Note: $park(), unpark(), setpark()$ are part of Solaris. Other OS may have 
 different support.
+
+\section{Condition Variables}
+
+In many cases, a thread wishes to check whether a \textbf{condition} is true
+before continuing its execution. For example, a parent thread might wish
+to check wether a child thread has completed before continuing (often called a
+$join()$).
+
+The problem is shown in \ref{301}
+
+\begin{figure}[h!]
+    \label{301}
+    \begin{center}
+        \includegraphics[width=7cm, height=5cm]{img/301.png}
+        \caption{A Parent waiting for its Child}
+    \end{center}
+\end{figure}
+
+We could try to use a shared variable and just spin. But this is very inefficent
+as the parent spins and wastes CPU time as shown in \ref{302}
+
+\begin{figure}[h!]
+    \label{302}
+    \begin{center}
+        \includegraphics[width=7cm, height=6cm]{img/302.png}
+        \caption{Spin based approach}
+    \end{center}
+\end{figure}
+
+\begin{tcolorbox}
+    \begin{center}
+        The Crux: How To Wait For A Condition
+    \end{center}
+
+    In multi-threaded programs, it is often useful for a thread to wait for
+    some condition to become true before proceeding. How should a thread wait for
+    a condition?
+\end{tcolorbox} 
+
+A \textbf{condition variable} is an explicit queue that threads can put themselves on
+when some state of execution (i.e., some \textbf{condition}) is not as desired
+(by \textbf{waiting} on the condition). Some other thread, when it changes said
+state, can then wake one (or more) of those waiting threads and thus allow them
+to continue (by \textbf{signaling} on the condition).\\
+
+\begin{figure}[h!]
+    \begin{center}
+        \includegraphics[width=7cm, height=8cm]{img/303.png}
+        \caption{Using a condition variable to Solve Fork-Join problem}
+    \end{center}
+\end{figure} 
+
+A thing to notice about $wait()$ call is that it also takes a lock as a paramter.
+It assumes that this mutex is locked when $wait()$ is called. The responsibility
+of $wait()$ is to release the lock and put the calling thread to sleep (atomically);
+When the thread wakes up (after some thread has signaled it), it must re-acquire
+the lock before returning to the caller.\\
+
+Two things to better understand the code:
+
+\begin{enumerate}
+    \item Usage of the state variable $done$: Lets say we did not use this. The
+        approach is broken then. The child may run and finish and signal immediatly
+        after its created. And then the parent tries to wait and goes to a
+        sleep forever.
+    \item Usage of locks: This approach is again broken as after the parent 
+        checks for $done == 0$, the child may signal before the wait is executed
+        and thus the parent goes in an infinite sleep.
+\end{enumerate}
+
+Tip: Always hold the lock while signaling. A good general rule.\\
+
+\section{The Bounded Buffer Problem}
+
+Imagine one or more producer threads and one or more consumer threads. Producers 
+generate data items and place them in a buffer; consumers grap said items from
+the buffer and consume them in some way. Because the bounded buffer is a shared
+resource, we require synchronized access to it.\\
+
+Lets try to come up with a solution for only one item in the buffer.
+
+\subsubsection{First solution}
+
+\begin{figure}[h!]
+    \begin{center}
+        \includegraphics[width=7cm, height=8cm]{img/308.png}
+        \caption{Single CV and If Statement}
+    \end{center}
+\end{figure}
+
+With just a single consumer and single producer, this code works. But if we have
+more than one of these threads, the solution breaks.\\
+
+The problem is with the \textit{if} statement. Lets say we have
+two running consumers $T_{c_1}, T_{c_2}$ and one producer $P$. $T_{c_1}$
+is schedulded first and it sleeps. $P$ is schedulded after it and it signals
+and now $T_{c_1}$ is in \textit{ready} queue. But now, $T_{c_2}$ runs.
+$T_{c_2}$ runs and finishes and now $T_{c_1}$ runs and fails because there
+is nothing in the buffer to take but it still tries to acquire something.\\
+
+This problem arrises because the OS does not gurrantee that the thread
+woken up will immediatly run. This reffered to as \textbf{Mesa semantics}.
+The opposite behavior is called \textbf{Hoare semantics}, which provide
+a harder guarantee that woken thread will run immediately upon being
+woken up.
+
+\subsubsection{Second solution}
+
+The previous problem is easily fixable by converting the \textit{if} to a 
+\textit{while} statement. Generally, in Mesa Semantics, its \textbf{always better
+to use while loops}.\\
+
+Another easy to see problem with this code is that there is only one condition
+variable and it may signal the wrong thread. To fix that, we use two condition
+variables instead.
+
+\subsubsection{Full Producer/Consumer Solution}
+
+\begin{figure}[h!]
+    \begin{center}
+        \includegraphics[width=7cm, height=7cm]{img/3013.png}
+        \caption{The Correct Put and Get Routines}
+    \end{center}
+\end{figure}
+
+\begin{figure}[h!]
+    \begin{center}
+        \includegraphics[width=7cm, height=9cm]{img/3014.png}
+        \caption{Producer/Consumer Synchronization}
+    \end{center}
+\end{figure}
