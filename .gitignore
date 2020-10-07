@@ -5,6 +5,7 @@
 *.aux
 *.log
 *.toc
+*.out
 
 # MCT assignments
 MCT/assignments
