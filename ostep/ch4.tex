@@ -229,7 +229,7 @@ This code has two problems.\\
                 \caption{No Mutual Exclusion}
             \end{center}
         \end{figure}
-    
+
     \item Performance: A thread waiting to acquire a lock which is already held
         endlessly checks the value of the flag in its time slice. This is known
         as \textbf{spin-waiting}. This wastes a lot of time while another thread
@@ -528,3 +528,249 @@ variables instead.
         \caption{Producer/Consumer Synchronization}
     \end{center}
 \end{figure}
+
+\section{Semaphores}
+
+A semaphore is an object with an integer values that we can manipulate with two
+routines: $sem\_wait()$ and $sem\_post()$ (Called so in POSIX standard). A 
+semaphore must be initialized to some value based on use (Initial value must be
+number of resources available at a time).\\
+
+Figure \ref{312} illustrates the use of these functions.
+
+\begin{figure}[h!]
+    \label{312}
+    \begin{center}
+        \includegraphics[width=7cm, height=3cm]{img/312.png}
+        \caption{Wait and Post}
+    \end{center}
+\end{figure}
+
+When the vale of semaphore is negative, it is equal to the number of waiting
+threads. This invariant is worth knowing.
+
+\subsubsection{Binary Semaphores (Locks)}
+
+To use the semaphore as a lock, its initial value should be 1. Now, $sem\_wait()$
+tries to acquire the lock and $sem\_post()$ releases the lock.
+
+\subsubsection{Semaphores for Ordering}
+
+Semaphores can be used to wait for a procedure to complete before moving on
+to the next one as shown in \ref{316}
+
+\begin{figure}[h!]
+    \label{316}
+    \begin{center}
+        \includegraphics[width=7cm, height=5cm]{img/316.png}
+        \caption{Parent waiting for its Child}
+    \end{center}
+\end{figure}
+
+To use this kind of ordering the semaphore needs to be initialised to 0 as it
+is clearly visable how it works.
+
+\subsection{Bounded Buffer Problem with Semaphores}
+
+\subsubsection{First Attempt}
+
+First attempt just uses two semaphores as shown in \ref{3110}
+
+\begin{figure}[h!]
+    \begin{center}
+        \includegraphics[width=7cm, height=4cm]{img/319.png}
+        \caption{Put and Get Routines}
+    \end{center}
+\end{figure}
+
+\begin{figure}[h!]
+    \label{3110}
+    \begin{center}
+        \includegraphics[width=7cm, height=7cm]{img/3110.png}
+        \caption{First attempt on Bounded Buffer}
+    \end{center}
+\end{figure}
+
+This solution works fine for single consumer and single produces. But lets say
+we have multiple consumers and multiple produces and queue of size greater than
+1. Then there is a \textit{data race} here. Two producers may try to call
+$put()$ at the same time.\\
+
+\subsubsection{Adding More Mutual Exclusion}
+
+Adding locks can remove the data race happening in \ref{3110} as shown in 
+\ref{3111}
+
+\begin{figure}[h!]
+    \label{3111}
+    \begin{center}
+        \includegraphics[width=7cm, height=6cm]{img/3111.png}
+        \caption{Adding Mutual Exclusion}
+    \end{center}
+\end{figure}
+
+One thing to note about this approach is that it causes a \textit{deadlock}. 
+Lets say a producers gets the lock while the queue is full, now the process
+is stuck in a deadlock as the lock cannot be released until queue isnt full and
+to remove something from the queue, the lock needs to be released.
+
+\subsubsection{Avoiding Deadlock}
+
+The working solution without deadlocks is given in \ref{3112}
+
+\begin{figure}[h!]
+    \label{3112}
+    \begin{center}
+        \includegraphics[width=7cm, height=7cm]{img/3112.png}
+        \caption{Avoiding Deadlock}
+    \end{center}
+\end{figure}
+
+\subsection{Reader-Writer Locks}
+
+Multiple reader threads can access a structure at once but when writing, only
+the writer thread should be inside the critical section. This type of lock can
+be implemented using semaphores as shown in \ref{3113}
+
+\begin{figure}[h!]
+    \begin{center}
+        \includegraphics[width=7cm, height=8cm]{img/3113.png}
+        \caption{Simple Reader-Writer Lock}
+    \end{center}
+\end{figure}
+
+\subsection{Thread Throttling}
+
+How to put a threshold on the number of threads created at a time? Use semaphores
+to \textbf{throttle} the amount of threads at a time. Use $sem\_wait()$ around 
+the thread creation region and $sem\_post()$ around the thread ending region.
+
+\section{Common Concurrency Problems}
+
+\subsection{Non-Deadlock Bugs}
+
+\begin{enumerate}
+    \item \textbf{Atomic-Violation Bugs:} The desired serializability among
+        multiple memory accesses is violated. (i.e. code region is intended
+        to be atmoic, but atmoicity is not enforced during execution). Fix:
+        use locks.
+
+    \item \textbf{Order-Violation Bugs:} The desired order between two memory
+        accesses is flipped (i.e. A should be executed before B, but it is not
+        enforced during execution). Fix: Use condition variables.
+\end{enumerate}
+
+\subsection{Deadlock Bugs}
+
+Deadlock occurs, for example, when a thread is holding a lock ($L_1$) and 
+waiting for another one ($L_2$); unfortunately, the thread (Thread 2) that
+hold $L_2$ is waiting for $L_1$ to be released as shown in \ref{326}.
+
+\begin{figure}[h!]
+    \label{326}
+    \begin{center}
+        \includegraphics[width=7cm, height=3cm]{img/326.png}
+        \caption{Simple Deadlock}
+    \end{center}
+\end{figure}
+
+\begin{tcolorbox}
+    \begin{center}
+        Crux: How to Deal with Deadlock
+    \end{center}
+
+    How should we build systems to prevent, avoid, or at least detect and
+    recover from deadlock?
+\end{tcolorbox}
+
+Why do deadlocks occur?
+
+\begin{enumerate}
+    \item Complex dependencies between components in large databases. 
+    \item Natue of encapsulation. Modularity does not mesh well with locking.
+\end{enumerate}
+
+\subsubsection{Conditions for deadlock}
+
+Four conditions need to hold for deadlock to occur:
+
+\begin{enumerate}
+    \item \textbf{Mutual exclusion:} Threads claim exclusive control of resources
+        they require.
+    \item \textbf{Hold-and-wait:} Threads hold resources allocated to them
+        and wait while additional resources they wish to acquire are not available.
+    \item \textbf{No preemption:} Resouces cannot be forcibly removed from
+        threads that are holding them.
+    \item \textbf{Circular wait:} There exists a circular chain of dependencies
+        on on or more resources.
+\end{enumerate}
+
+If any of these four conditions is not met, deadlock cannot occur. So, to prevent
+deadlock from occuring, we prevent atleast one of these conditions from happening.
+
+\paragraph{Prevention:}
+
+\begin{enumerate}
+    \item \textbf{Circular Wait:} The most practical prevent technique out of
+        all. Simplest way to remove this is impose a \textbf{total ordering} on
+        lock acquisition. For example, if there were two locks in system
+        $L_1$ and $L_2$, you can prevent deadlock by always acquiring $L_1$
+        before $L_2$. Such strict ordering ensures that no cyclical wait
+        arises; hence, no deadlock.
+
+    \item \textbf{Hold-and-wait:} The hold-and-wait requirement for deadlock
+        can be avlouded by acquiring all locks at once, atomically. In practice,
+        this can be achieved as shown in \ref{holdwait}
+
+        \begin{figure}[h!]
+            \label{holdwait}
+            \begin{center}
+                \includegraphics[width=7cm, height=4cm]{img/holdwait.png}
+                \caption{Acquiring all locks atomically}
+            \end{center}
+        \end{figure}
+
+        This solution is problematic because encapsulation works against us.
+        This type of code reduces modularity as everything has to be done at 
+        once.
+
+    \item \textbf{No Preemption:} Because we generally view locks as held
+        until called unlock, multiple lock acquisitions often get us into 
+        trouble because when waiting for one lock we are holding another. To
+        prevent this, we preempt the locks if the thread needs to wait as shown
+        in \ref{noprempt}
+
+        \begin{figure}[h!]
+            \label{noprempt}
+            \begin{center}
+                \includegraphics[width=7cm, height=4cm]{img/noprempt.png}
+                \caption{Preempting locks in case it needs to wait}
+            \end{center}
+        \end{figure}
+
+        A new problem arises here which is called \textbf{livelock}. It is
+        possible that both the threads repeadtly keep trying gto acquire the
+        locks, fail and then try again. They are thus running but do not make
+        any progress. There are solutions to livelock problem, too: one could
+        add a random delay before looping back and try the entire thing over
+        again, thus decreasing the odds of repeated interference among 
+        competing threads.\\
+
+        Another problem with this approach is it goes against encapsulation as
+        the second call to lock could be deep buried under some abstractions 
+        and we need to go back to call them which is very hard to do.
+
+    \item \textbf{Mutual Exclusion:} The idea is to design various data 
+        structures without locks at all. The idea behind these textbf{lock-free}
+        approaches here is simple: using powerful hardware instructions
+        in a manner that does not require explicit locking. An example is using
+        compare-and-swap to make a linked list insert as should in \ref{insertlink}.
+
+        \begin{figure}[h!]
+            \label{insertlink}
+            \begin{center}
+                \includegraphics[width=7cm, height=5cm]{img/insertlink.png}
+                \caption{Linked list with compare-and-swap}
+            \end{center}
+        \end{figure}
+\end{enumerate}
