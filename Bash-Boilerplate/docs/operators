@@ -1,0 +1,28 @@
+Comparison Operators:
+
+String          Numeric         True if
+
+x = y           x -eq y         x is equal to y
+x != y          x -ne y         x is not equal to y
+x < y           x -lt y         x is less than y
+n/a             x -le y         x is less than or equal to y
+x > y           x -gt y         x is greater than or equal to y
+n/a             x -ge y         x is greater than or equal to y
+-n x            n/a             x is not null
+-z x            n/a             x is null
+
+
+
+
+File Evaluation Operators:
+
+Operator            True if
+
+-d file             file exists and is a directory
+-e file             file exists
+-f file             file exists and is a regular file
+-r file             User has read permission on file
+-s file             file exists and is not empty
+-w file             User has write permission on file
+file1 -nt file2     file1 is newer than file2
+file1 -ot file2     file1 is older than file2

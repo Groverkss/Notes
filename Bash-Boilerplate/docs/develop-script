@@ -1,0 +1,18 @@
+# Tips on developing a script
+
+1. Develop the script (or script component) as a pipeline, one step at a time,
+entirely on the command line. Use bash for this process even though the
+eventual interpreter might be dash or another sh variant.
+
+2. Send output to standard output and check to be sure it looks right.
+
+3. At each step, use the shell’s command history to recall pipelines and the
+shell’s editing features to tweak them.
+
+4. Until the output looks right, you haven’t actually done anything, so there’s
+nothing to undo if the command is incorrect.
+
+5. Once the output is correct, execute the actual commands and verify that
+they worked as you intended.
+
+6. Use fc to capture your work, then clean it up and save it.

@@ -1,0 +1,33 @@
+All crontab files have the same syntax:
+
+minute    hour    dom    month    weekday    command        
+
+Crontab time specifications:
+
+Field       Description             Range
+-------------------------------------------------------
+
+minute      Minute of the hour      0 to 59
+hour        Hour of the day         0 to 23
+dom         Day of the month        1 to 31
+month       Month of the year       1 to 12
+weekday     Day of the week         0 to 6 (0 = Sunday)
+
+--> A star, which matches everything
+--> A single integer, which matches exactly
+--> Two integers separated by a dash, matching a range of values
+--> A range followed by a slash and a step value, e.g., 1-10/2
+--> A comma-separated list of integers or ranges, matching any value
+
+If both dom and weekday are specified, only one of the two conditions needs
+to be selected.
+
+-------------------------------------------------------------------------------
+
+--> Use absolute paths in cron scripts
+
+--> cron scripts on execution do not run .bashrc or .bash_profile. Don't expect
+    the environmental variables setup there to be setup on your cron script.
+
+--> crontab automatically checks for changes when a script is added. Do not
+    add manually to cron.

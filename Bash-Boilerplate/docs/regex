@@ -1,0 +1,37 @@
+Special Characters in Regex:
+
+Symbol                  What it matches or does
+
+.                       Matches any character
+[char]                  Matches any character from a given set
+[^char]                 Matches any character not in a given set
+^                       Matches from the beginning of a line
+$                       Matches the end of a line
+\w                      Matches any "word" character (same as [A-Za-z0-9_])
+\s                      Matches any whitespace character (same as [ \f\t\n\r])
+\d                      Matches any difit (same as [0-9])
+
+-------------------------------------------------------------------------------
+
+|                       Matches either the element to its left or the right
+(expr)                  Limits scope, groups elements, allows matches to be 
+                        captured
+
+-------------------------------------------------------------------------------
+
+?                       Allows zero or one match of the preceding element
+*                       Allows zero, one, or many matches of the preceding
+                        element
++                       Allows one or more matches of the preceding element
+{ n }                   Matches exactly n instances of the preceding element
+{ min, }                Matches at least min instance
+{ min,max }             Matches any number o instances from min to max
+
+Note: Do not confuse * (the zero or more quantifier) with shell's globbing
+character. The regex version of the star need something to modify; otherwise
+it won't do what you expect. Use .* if any sequence of characters
+(including no characters at all) is an acceptable match.
+
+Captures: When a match succeeds every set of parentheses becomes a 
+"capture group" that records the actual text that it matched. The exact manner
+int which they are available depends on the implementation and context.

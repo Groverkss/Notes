@@ -1,0 +1,21 @@
+cut: separate lines into fields
+
+sort: sort lines
+Example: sort -t: -k3,3 -n /etc/group
+
+uniq: print unique lines
+Example: cut -d: -f7 /etc/passwd | sort | uniq -c
+Output: 20 /bin/bash
+        12 /bin/false
+
+wc: count lines, words, and characters
+-l --> newline count
+-c --> byte count
+-w --> word count
+
+tee: copy input to two places
+
+head and tail: read the beginning or end of a file
+-n <NUM> --> first NUM files
+
+grep: search text for a pattern
