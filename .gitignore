@@ -9,3 +9,6 @@
 
 # MCT assignments
 MCT/assignments
+
+# Virtual environments
+*.env
